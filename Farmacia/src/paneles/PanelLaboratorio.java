@@ -137,7 +137,13 @@ public class PanelLaboratorio extends JPanel {
 		Object[][] data = {};
 		String[] columnNames = {"Laboratorios"};
 		
-		dtm= new DefaultTableModel(data, columnNames);
+		dtm= new DefaultTableModel(data, columnNames){
+        	
+        	public boolean isCellEditable(int row, int column) {
+				return false;
+        	}
+        	
+        };
 		JTable tabla = new JTable(dtm);	
         tabla.setMinimumSize(new Dimension(119, 0));
         
