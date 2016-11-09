@@ -421,6 +421,8 @@ public class PanelMedicamentos extends JPanel {
     		limpiarTable();
     		// LLENADO DE LA TABLA //
             actualizarTabla();
+            
+            JOptionPane.showMessageDialog(null, "¡ Medicamento eliminado !");
         }
 		
 		
