@@ -410,7 +410,7 @@ public class PanelMedicamentos extends JPanel {
 	private void botonEliminar(java.awt.event.ActionEvent evt){
 		
 		
-		int ax = JOptionPane.showConfirmDialog(null, "¿ Está seguro de eliminar la presentación ?");
+		int ax = JOptionPane.showConfirmDialog(null, "¿ Está seguro de eliminar el medicamento ?");
         if(ax == JOptionPane.YES_OPTION){
         	DefaultTableModel model = (DefaultTableModel)table.getModel();
     		int fila = table.getSelectedRow()+1;
