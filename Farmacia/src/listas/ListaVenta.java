@@ -59,6 +59,29 @@ public class ListaVenta {
         tamanio++;
     }
     
+    public void insertarNodo(NodoVenta nodoNuevo){
+        
+        NodoVenta nuevo = nodoNuevo;
+        
+        
+        if (esVacia()) {
+           
+            inicio = nuevo;		 // Inicializa la lista agregando como inicio al nuevo nodo.
+            
+        }else{
+           
+            NodoVenta aux = inicio;
+            
+            while(aux.getSiguiente() != null){
+                aux = aux.getSiguiente();
+            }
+            
+            aux.setSiguiente(nuevo);	// Agrega el nuevo nodo al final de la lista.
+        }
+        
+        tamanio++;
+    }
+    
     public void eliminar(int pos){
     	NodoVenta aux = inicio;
     	int n=1;

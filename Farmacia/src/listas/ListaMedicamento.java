@@ -210,4 +210,46 @@ public class ListaMedicamento {
     	 
     	 return false;
     }
+    
+    public void devolverCantidad(int codigo,int cantidad){
+    	
+    	NodoMedicamento aux = inicio;
+        
+        boolean encontrado = false;
+     
+        while(aux != null && encontrado != true){
+            
+            if (codigo == aux.getCodigo()){
+                
+                aux.setCantidad(aux.getCantidad()+cantidad);
+                encontrado=true;
+            }
+            else{
+                
+                aux = aux.getSiguiente();
+            }
+        }
+    	
+    }
+    
+    public void sacarCantidad(int codigo,int cantidad){
+    	
+    	NodoMedicamento aux = inicio;
+        
+        boolean encontrado = false;
+     
+        while(aux != null && encontrado != true){
+            
+            if (codigo == aux.getCodigo()){
+                
+                aux.setCantidad(aux.getCantidad()-cantidad);
+                encontrado=true;
+            }
+            else{
+                
+                aux = aux.getSiguiente();
+            }
+        }
+    	
+    }
 }
