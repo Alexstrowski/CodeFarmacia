@@ -76,7 +76,7 @@ public class VentanaMenu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaMenu frame = new VentanaMenu(1);
+					VentanaMenu frame = new VentanaMenu(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
