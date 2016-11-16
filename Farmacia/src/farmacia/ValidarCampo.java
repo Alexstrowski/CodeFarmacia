@@ -123,7 +123,6 @@ public class ValidarCampo {
 	
 	private int evaluarFecha(JDateChooser tfFecha) throws ParseException{
 		
-		String actual;
 		Date fechaActual = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		fechaActual = dateFormat.parse(dateFormat.format(fechaActual));

@@ -1,9 +1,12 @@
 package paneles;
 
 import javax.swing.JPanel;
+
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,7 +16,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
+
 import java.awt.Font;
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -22,17 +27,25 @@ import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 
 import farmacia.CargarArchivo;
 import farmacia.EscribirArchivo;
+import farmacia.Validacion;
+import farmacia.ValidarCampo;
+import farmacia.VentanaMenu;
 import listas.ListaMedicamento;
 import listas.ListaUsuario;
 import listas.NodoMedicamento;
 import listas.NodoUsuario;
+import listas.NodoVenta;
+
 import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.DefaultComboBoxModel;
 
 public class PanelUsuario extends JPanel {
@@ -48,6 +61,8 @@ public class PanelUsuario extends JPanel {
 	private JComboBox comboFiltro;
 	private TableRowSorter trsFiltro;
 	private JComboBox comboCargo;
+	private boolean filtroTabla=false;
+	
 
 	private ListaUsuario lista;
 
@@ -78,7 +93,7 @@ public class PanelUsuario extends JPanel {
 		panelDatos.add(lblTelefono);
 		
 		JLabel lblUsuario = new JLabel("Usuario :");
-		lblUsuario.setBounds(248, 65, 46, 14);
+		lblUsuario.setBounds(248, 65, 70, 14);
 		panelDatos.add(lblUsuario);
 		
 		JLabel lblContrasea = new JLabel("Contrase\u00F1a :");
@@ -88,12 +103,22 @@ public class PanelUsuario extends JPanel {
 		tfNombre = new JTextField();
 		tfNombre.setBounds(90, 23, 126, 20);
 		panelDatos.add(tfNombre);
+		tfNombre.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				Validacion.validarLetra(e);
+			}
+		});
 		tfNombre.setColumns(10);
 		
 		tfApellido = new JTextField();
 		tfApellido.setColumns(10);
 		tfApellido.setBounds(90, 62, 126, 20);
 		panelDatos.add(tfApellido);
+		tfApellido.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				Validacion.validarLetra(e);
+			}
+		});
 		
 		tfDir = new JTextField();
 		tfDir.setColumns(10);
@@ -104,6 +129,11 @@ public class PanelUsuario extends JPanel {
 		tfTel.setColumns(10);
 		tfTel.setBounds(333, 23, 126, 20);
 		panelDatos.add(tfTel);
+		tfTel.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				Validacion.validarNumero(e);
+			}
+		});
 		
 		tfUsuario = new JTextField();
 		tfUsuario.setColumns(10);
@@ -130,34 +160,61 @@ public class PanelUsuario extends JPanel {
 		add(label_3);
 		
 		tfBuscar = new JTextField();
+		tfBuscar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				txtFiltroKeyTyped(e);
+			}
+		});
 		tfBuscar.setColumns(10);
 		tfBuscar.setBackground(new Color(224, 255, 255));
 		tfBuscar.setBounds(305, 236, 322, 20);
 		add(tfBuscar);
 		
 		comboFiltro = new JComboBox();
+		comboFiltro.setModel(new DefaultComboBoxModel(new String[] {"Cargo", "Nombres"}));
 		comboFiltro.setBounds(167, 236, 108, 20);
 		add(comboFiltro);
 		
-		JButton button = new JButton((String) null);
-		button.setIcon(new ImageIcon(PanelUsuario.class.getResource("/iconos/Delete-32.png")));
-		button.setBounds(319, 181, 89, 44);
-		add(button);
+		JButton btnEliminar= new JButton((String) null);
+		btnEliminar.setIcon(new ImageIcon(PanelUsuario.class.getResource("/iconos/Delete-32.png")));
+		btnEliminar.setBounds(319, 181, 89, 44);
+		add(btnEliminar);
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(table.getSelectedRow()>-1){
+					botonEliminar(e);
+				}else{
+					JOptionPane.showMessageDialog(null,"Debe seleccionar una fila primero","WARNING_MESSAGE",JOptionPane.WARNING_MESSAGE);
+				}
+					
+			}
+		});
 		
-		JButton button_1 = new JButton("");
-		button_1.setIcon(new ImageIcon(PanelUsuario.class.getResource("/iconos/Edit File Filled-32.png")));
-		button_1.setBounds(447, 181, 89, 44);
-		add(button_1);
+		JButton btnEditar = new JButton("");
+		btnEditar.setIcon(new ImageIcon(PanelUsuario.class.getResource("/iconos/Edit File Filled-32.png")));
+		btnEditar.setBounds(447, 181, 89, 44);
+		add(btnEditar);
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()>-1){
+					botonEditar(e);
+				}else{
+					JOptionPane.showMessageDialog(null,"Debe seleccionar una fila primero","WARNING_MESSAGE",JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		
-		JButton button_2 = new JButton("");
-		button_2.addActionListener(new ActionListener() {
+		JButton btnAgregar = new JButton("");
+		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				botonAgregar(e);
 			}
 		});
-		button_2.setIcon(new ImageIcon(PanelUsuario.class.getResource("/iconos/Plus-32.png")));
-		button_2.setBounds(192, 181, 89, 44);
-		add(button_2);
+		btnAgregar.setIcon(new ImageIcon(VentanaMenu.class.getResource("/iconos/Plus-32.png")));
+		btnAgregar.setBounds(190, 181, 89, 44);
+		add(btnAgregar);
 		
 		JLabel label = new JLabel("Agregar");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -192,7 +249,7 @@ public class PanelUsuario extends JPanel {
 
 	}
 	
-private JTable crearTabla(ListaUsuario lista){
+	private JTable crearTabla(ListaUsuario lista){
 		
 		Object[][] data = {};					//array bidimencional de objetos con los datos de la tabla
               
@@ -230,6 +287,11 @@ private JTable crearTabla(ListaUsuario lista){
         	tabla.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
         
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
+        
         // LLENADO DE LA TABLA //
         
         NodoUsuario aux = lista.getInicio();
@@ -247,33 +309,130 @@ private JTable crearTabla(ListaUsuario lista){
 	private void botonAgregar(java.awt.event.ActionEvent evt){
 		
 		
-		int codigo = lista.dimension()+1;
-		String cargo = comboCargo.getSelectedItem().toString();
-		String nombre = tfNombre.getText();
-		String apellido = tfApellido.getText();
-		String dir = tfDir.getText();
-		String tel = tfTel.getText();
-		String usuario = tfUsuario.getText();
-		String pass = tfPass.getText();
+		ValidarCampo vc = new ValidarCampo();
 		
-		lista.insertarFinal(codigo,cargo,nombre, apellido, dir, tel, usuario, pass);
+		if(vc.validarCampo(tfNombre) && vc.validarCampo(tfApellido) && vc.validarCantidad(tfTel) && vc.validarCampo(tfDir) && vc.validarCampo(tfPass) && vc.validarCampo(tfUsuario)){
 		
-		Object[] newRow={codigo,cargo,nombre,apellido, dir, tel, usuario, pass};
-		dtm.addRow(newRow);
-		
-		escribirArchivo(lista);
-		
-		tfNombre.setText("");
-		tfApellido.setText("");
-		tfDir.setText("");
-		tfTel.setText("");
-		tfUsuario.setText("");
-		tfPass.setText("");
-
-		
-		JOptionPane.showMessageDialog(null, "AGREGADO");	
+			int codigo = lista.dimension()+1;
+			String nombre = tfNombre.getText();
+			String apellido = tfApellido.getText();
+			String telefono = tfTel.getText();
+			String direccion = tfDir.getText();
+			String password = tfPass.getText();
+			String usuario = tfUsuario.getText();
+			String cargo = comboCargo.getSelectedItem().toString();
+			
+			if(lista.verificarRepetido(nombre, apellido, usuario, cargo)){
+					
+				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
+			}else{
+					
+				lista.insertarFinal(codigo,cargo,nombre, apellido,direccion,telefono,usuario,password);
+					
+				Object[] newRow={codigo,cargo,nombre, apellido,direccion,telefono,usuario,password};
+				dtm.addRow(newRow);
+					
+				escribirArchivo(lista);
+					
+				tfNombre.setText("");
+				tfApellido.setText("");
+				tfTel.setText("");
+				tfDir.setText("");
+				tfPass.setText("");
+				tfUsuario.setText("");
+					
+				JOptionPane.showMessageDialog(null, "AGREGADO");	
+			}
+		}
 		
 	}
+	
+	private void botonEditar(java.awt.event.ActionEvent evt){
+		
+		tfBuscar.requestFocus();
+		Robot robot;
+		try {
+			robot = new Robot();
+			robot.keyPress(KeyEvent.VK_BACK_SPACE);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		
+		int fila = table.getSelectedRow();
+		int modelIndex = 0;
+		NodoUsuario aux=null;
+		
+		if(filtroTabla){
+			
+			modelIndex = table.convertRowIndexToModel(fila);
+			modelIndex++;
+			aux=lista.buscarNodo(modelIndex);
+			fila = modelIndex;
+			setFiltroTabla(false);
+		}else{
+			int indiceTablaOrdenada = table.convertRowIndexToView(fila);
+			indiceTablaOrdenada++;
+			aux=lista.buscarNodo(indiceTablaOrdenada);
+			fila = indiceTablaOrdenada;
+		}
+	
+		
+		try{
+			EditarUsuario em = new EditarUsuario(aux,lista,fila,dtm);
+			em.setVisible(true);
+		}catch(Exception ex){
+			
+		}
+		
+		tfBuscar.setText("");
+			
+	}
+	
+	private void botonEliminar(java.awt.event.ActionEvent evt){
+		
+		
+		int ax = JOptionPane.showConfirmDialog(null, "¿ Está seguro de eliminar el usuario ?");
+        if(ax == JOptionPane.YES_OPTION){
+        	DefaultTableModel model = (DefaultTableModel)table.getModel();
+        	
+    		
+    		int modelIndex = 0;
+    		int fila = table.getSelectedRow();
+    		
+    		if(filtroTabla){
+    			
+    			modelIndex = table.convertRowIndexToModel(fila);
+    			modelIndex++;
+    			lista.eliminar(modelIndex);
+    			model.removeRow(table.getSelectedRow()); 
+    			setFiltroTabla(false);
+    		}else{
+    			int indiceTablaOrdenada = table.convertRowIndexToView(fila);
+    			indiceTablaOrdenada++;
+    			lista.eliminar(indiceTablaOrdenada);
+    			model.removeRow(table.getSelectedRow()); 
+    		}
+     
+            
+            JOptionPane.showMessageDialog(null, "¡ Usuario eliminado !");
+        }
+        
+      	tfBuscar.requestFocus();
+    		Robot robot;
+    		try {
+    			robot = new Robot();
+    			robot.keyPress(KeyEvent.VK_BACK_SPACE);
+    		} catch (AWTException e) {
+    			e.printStackTrace();
+    		}
+    		tfBuscar.setText("");
+    		
+    		((DefaultTableModel)table.getModel()).setRowCount( 0); // limpiar JTABLE OPTIMIZADO
+    		actualizarTabla();
+	}
+
+	
+
 	
 	public void escribirArchivo(ListaUsuario lista){   
 		
@@ -292,21 +451,19 @@ private JTable crearTabla(ListaUsuario lista){
 	public void filtro() {
         int columnaABuscar = 0;
         
-        if (comboFiltro.getSelectedItem().toString() == "Código") {
-            columnaABuscar = 0;
-            
-        }
-        if (comboFiltro.getSelectedItem().toString() == "Nombre") {
+        if (comboFiltro.getSelectedItem().toString() == "Cargo") {
             columnaABuscar = 1;
             
         }
-        if (comboFiltro.getSelectedItem().toString() == "Laboratorio") {
+        
+        if (comboFiltro.getSelectedItem().toString() == "Nombres") {
             columnaABuscar = 2;
             
         }
+        
+
         trsFiltro.setRowFilter(RowFilter.regexFilter(tfBuscar.getText(), columnaABuscar));
 	}
-	
 	
 	private void txtFiltroKeyTyped(java.awt.event.KeyEvent e) {
  
@@ -319,8 +476,51 @@ private JTable crearTabla(ListaUsuario lista){
 			}
 		});
 		
-		
+		setFiltroTabla(true);
 		trsFiltro = new TableRowSorter(table.getModel());
 		table.setRowSorter(trsFiltro);
     }
+	
+
+
+	private void limpiarTable(){
+		
+		try {
+	        DefaultTableModel modelo=(DefaultTableModel) table.getModel();
+	        int filas=table.getRowCount();
+	        for (int i = 0;i<filas; i++) {
+	            modelo.removeRow(0);
+	        }
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+	    }
+	}
+	
+	private void actualizarTabla(){
+		
+		NodoUsuario aux = lista.getInicio();
+		int i = 1;
+	    
+	    while(aux!=null){
+	    	
+	    	aux.setCodigo(i);
+	    	Object[] nuevaFila={aux.getCodigo(),aux.getCargo(),aux.getNombre(),aux.getApellido(),aux.getDireccion(),aux.getTelefono(),aux.getUsuario(),aux.getPassword()};
+	    	dtm.addRow(nuevaFila);
+	    	aux=aux.getSiguiente();
+	    	
+	    	i++;
+	    }
+	    
+	    escribirArchivo(lista);
+	}
+	
+	
+	public boolean isFiltroTabla() {
+		return filtroTabla;
+	}
+
+	public void setFiltroTabla(boolean filtroTabla) {
+		this.filtroTabla = filtroTabla;
+	}
+	
 }

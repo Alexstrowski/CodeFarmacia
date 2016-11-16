@@ -114,6 +114,20 @@ public class VentanaAceptar extends JDialog {
 		btnAgregar.setBounds(488, 25, 89, 23);
 		getContentPane().add(btnAgregar);
 		
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(VentanaAceptar.class.getResource("/iconos/Search-16.png")));
+		label.setBounds(132, 29, 16, 14);
+		getContentPane().add(label);
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setIcon(new ImageIcon(VentanaAceptar.class.getResource("/iconos/Sell Stock-16.png")));
+		label_1.setBounds(132, 54, 16, 14);
+		getContentPane().add(label_1);
+		
+		JLabel label_2 = new JLabel("");
+		label_2.setBounds(0, 0, 637, 85);
+		getContentPane().add(label_2);
+		
 	}
 	
 	private JTable crearTabla(ListaMedicamento lista){
@@ -234,7 +248,11 @@ public class VentanaAceptar extends JDialog {
 			setCantidad(Integer.parseInt(tfCantidad.getText()));
 			dispose();
 		}catch(Exception ex){
-			JOptionPane.showMessageDialog(null, " Seleccione una fila primero", "ERROR", JOptionPane.WARNING_MESSAGE);
+			
+				JOptionPane.showMessageDialog(null, " ¡ Seleccione una fila e ingrese la cantidad !", "ERROR", JOptionPane.WARNING_MESSAGE);
+		
+			
+			
 		}
 		
 	}

@@ -10,6 +10,7 @@ import listas.ListaLaboratorio;
 import listas.ListaMedicamento;
 import listas.ListaPresentacion;
 import listas.ListaUsuario;
+import listas.ListaVenta;
 
 public class CargarArchivo {
 
@@ -146,5 +147,39 @@ public class CargarArchivo {
 		}
 	}
 	
+	public static void cargarArchivoVentas(ListaVenta lista){
+		
+		File archivo = new File("ventas.xls");
+		
+		try {
+			
+			Workbook leerExcel = jxl.Workbook.getWorkbook(archivo);
+			
+			
+				
+				Sheet hojaP = leerExcel.getSheet("Venta");	// LEE LA HOJA DONDE GUARDA LOS DATOS
+				int columnas = hojaP.getColumns();				// OBTIENE COLUMNAS
+				int filas = hojaP.getRows();					// OBTIENE FILAS
+				
+				String data[]= new String[columnas];
+				
+				for(int fila = 1; fila<filas; fila++){
+					
+					for(int columna = 0 ; columna<columnas ; columna++){
+						
+							data[columna]= hojaP.getCell(columna, fila).getContents();
+							
+					}
+					lista.insertarFinal(Integer.parseInt(data[0]),data[1],data[2],data[3],Integer.parseInt(data[4]),Double.parseDouble(data[5]),Double.parseDouble(data[6]),Double.parseDouble(data[7]),data[8]);
+				}	
+			
+		} catch (BiffException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
 	
 }

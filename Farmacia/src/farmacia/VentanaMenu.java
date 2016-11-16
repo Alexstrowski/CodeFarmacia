@@ -32,6 +32,7 @@ import listas.NodoMedicamento;
 import paneles.PanelLaboratorio;
 import paneles.PanelMedicamentos;
 import paneles.PanelPresentacion;
+import paneles.PanelReporte;
 import paneles.PanelUsuario;
 import paneles.PanelVenta;
 
@@ -71,6 +72,7 @@ public class VentanaMenu extends JFrame {
 	ListaVenta listaV = new ListaVenta();
 	ListaLaboratorio listaL = new ListaLaboratorio();
 	ListaPresentacion listaP = new ListaPresentacion();
+	private JButton btnReporte;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -95,12 +97,13 @@ public class VentanaMenu extends JFrame {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 723, 613);
+		setBounds(100, 100, 712, 601);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		setResizable(false);
 		setTitle("Menú");
 		
 		
@@ -185,7 +188,12 @@ public class VentanaMenu extends JFrame {
 		btnUsuarios.setBounds(347, 0, 118, 83);
 		panelBotones.add(btnUsuarios);
 		
-		JButton btnReporte = new JButton("Reporte");
+		btnReporte = new JButton("Reporte");
+		btnReporte.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				botonesAdmi(e);
+			}
+		});
 		btnReporte.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnReporte.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnReporte.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -214,6 +222,7 @@ public class VentanaMenu extends JFrame {
 		
 		cargarArchivo(listaL);
 		cargarArchivo(listaP);
+		cargarArchivo(listaV);
 		
 		panelesAdmi = new JPanel();
 		panelesAdmi.setBounds(0, 83, 697, 484);
@@ -236,6 +245,9 @@ public class VentanaMenu extends JFrame {
 		JPanel panelPresentacion = pp;
 		panelesAdmi.add(panelPresentacion, "panelPresentacion");
 		
+		PanelReporte pr = new PanelReporte(listaV);
+		JPanel panelReporte = pr;
+		panelesAdmi.add(panelReporte, "panelReporte");
 		
 		//<---------------------------------------------------------------PANEL FARMACEUTICO -------------------------------------------------------------------------->
 		
@@ -275,6 +287,10 @@ public class VentanaMenu extends JFrame {
 				}else{
 					if(evt.getSource()==btnPresentacion){
 						((CardLayout)panelesAdmi.getLayout()).show(panelesAdmi,"panelPresentacion");
+					}else{
+						if(evt.getSource()==btnReporte){
+							((CardLayout)panelesAdmi.getLayout()).show(panelesAdmi,"panelReporte");
+						}
 					}
 				}
 			}
@@ -307,6 +323,8 @@ public class VentanaMenu extends JFrame {
 		CargarArchivo.cargarArchivoPresentacion(lista);
 	}
 	
-	
+	public void cargarArchivo(ListaVenta lista){
+		CargarArchivo.cargarArchivoVentas(lista);
+	}
 }
 	

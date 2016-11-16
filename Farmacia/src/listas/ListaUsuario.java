@@ -51,19 +51,50 @@ public class ListaUsuario {
 	    }
 	 
 	 public void eliminar(int pos){
-	    	NodoUsuario aux = inicio;
-	    	int n=1;
-	    	while(n!=pos ){
-	    		aux=aux.getSiguiente();
-	    		n++;
-	    	}
 	    	
-	        aux.setNombre("");
-	        aux.setApellido("");
-	        aux.setDireccion("");
-	        aux.setTelefono("");
-	        aux.setUsuario("");
-	        aux.setPassword("");
+	    	
+	    	NodoUsuario aux = inicio;
+			NodoUsuario p=null;
+				
+			if(pos==1){
+				inicio=inicio.getSiguiente();
+				aux=null;
+			}
+			else{
+					
+				
+				int n=1;
+					
+				while(n!=pos){
+					p=aux;
+					aux=aux.getSiguiente();
+					n++;
+				}
+				p.setSiguiente(aux.getSiguiente());
+					
+				aux=null;
+			}
+	    }
+	 
+	 public NodoUsuario buscarNodo(int referencia){
+	        
+	        NodoUsuario aux = inicio;
+	       
+	        boolean encontrado = false;
+	     
+	        while(aux != null && encontrado != true){
+	            
+	            if (referencia == aux.getCodigo()){
+	                
+	                encontrado = true;
+	            }
+	            else{
+	                
+	                aux = aux.getSiguiente();
+	            }
+	        }
+	        
+	        return aux;
 	    }
 	 
 	 public int dimension(){
@@ -139,4 +170,50 @@ public class ListaUsuario {
 	public void setInicio(NodoUsuario inicio) {
 		this.inicio = inicio;
 	}
+	
+	public void editarPorPosicion(int referencia, String nombre,String apellido,String telefono,String direccion,String usuario,String password,String cargo){
+        
+    	NodoUsuario aux = inicio;
+        
+        boolean encontrado = false;
+     
+        while(aux != null && encontrado != true){
+            
+            if (referencia == aux.getCodigo()){
+                
+                encontrado = true;
+            }
+            else{
+                
+                aux = aux.getSiguiente();
+            }
+        }
+        
+            // Actualizamos el valor del nodo
+        
+        aux.setNombre(nombre);
+        aux.setApellido(apellido);
+        aux.setTelefono(telefono);
+        aux.setDireccion(direccion);
+        aux.setUsuario(usuario);
+        aux.setPassword(password);
+        aux.setCargo(cargo);
+        
+    }
+	
+	public boolean verificarRepetido(String nombre,String apellido,String usuario, String cargo){
+    	
+    	NodoUsuario aux = inicio;
+    	
+    	 while(aux!=null){
+    		 
+    		 if( (aux.getNombre().toLowerCase().equals(nombre.toLowerCase()) || aux.getApellido().toLowerCase().equals(apellido.toLowerCase())) && aux.getUsuario().toLowerCase().equals(usuario.toLowerCase())){
+    			 return true;
+    		 }
+    		
+			 aux=aux.getSiguiente();	
+		 }
+    	 
+    	 return false;
+    }
 }

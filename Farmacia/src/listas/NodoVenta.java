@@ -8,6 +8,9 @@ public class NodoVenta {
 	private double precio;
 	private int codigo; 
 	private double subtotal;
+	private String cliente;
+	private double descuento;
+	private String fecha;
 	
 	private NodoVenta siguiente;
 
@@ -18,6 +21,9 @@ public class NodoVenta {
         this.precio = 0;
         this.codigo = 0;
         this.subtotal=0;
+        this.cliente="";
+        this.fecha="";
+        this.descuento=0;
         this.siguiente = null;
     }
 	
@@ -64,5 +70,28 @@ public class NodoVenta {
 
 	public void setSiguiente(NodoVenta siguiente) {
 		this.siguiente = siguiente;
+	}
+	public String getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
+	}
+
+	public String getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+	
+	public double getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(double descuento) {
+		this.descuento = descuento;
 	}
 }

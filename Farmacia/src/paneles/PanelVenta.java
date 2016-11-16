@@ -8,7 +8,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
+import farmacia.EscribirArchivo;
 import listas.ListaMedicamento;
 import listas.ListaVenta;
 import listas.NodoMedicamento;
@@ -24,6 +26,10 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
 
@@ -46,19 +52,19 @@ public class PanelVenta extends JPanel {
 	private ListaMedicamento listaM;
 	private ListaVenta listaV;
 	private static int contador=1;
+	private JLabel lblAnuncio;
 	
 	public PanelVenta(ListaMedicamento listaM,ListaVenta listaV) {
 		
 		setLayout(null);
 		this.listaM=listaM;
 		this.listaV=listaV;
-		
-		JSeparator s = new JSeparator(SwingConstants.VERTICAL);
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Opciones", Font.BOLD, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 412, 120);
-		add(panel);
-		panel.setLayout(null);
+
+		JPanel panelOpciones = new JPanel();
+		panelOpciones.setBorder(new TitledBorder(null, "Opciones", Font.BOLD, TitledBorder.TOP, null, null));
+		panelOpciones.setBounds(10, 11, 418, 120);
+		add(panelOpciones);
+		panelOpciones.setLayout(null);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
@@ -68,8 +74,9 @@ public class PanelVenta extends JPanel {
 		});
 		btnAgregar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnAgregar.setIcon(new ImageIcon(PanelVenta.class.getResource("/iconos/Plus Math-16.png")));
-		btnAgregar.setBounds(10, 26, 112, 23);
-		panel.add(btnAgregar);
+		btnAgregar.setBounds(21, 26, 112, 23);
+		panelOpciones.add(btnAgregar);
+		
 		
 		JButton btnCancelar = new JButton("Eliminar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -83,8 +90,8 @@ public class PanelVenta extends JPanel {
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCancelar.setIcon(new ImageIcon(PanelVenta.class.getResource("/iconos/Delete-16.png")));
-		btnCancelar.setBounds(132, 26, 118, 23);
-		panel.add(btnCancelar);
+		btnCancelar.setBounds(160, 26, 118, 23);
+		panelOpciones.add(btnCancelar);
 		
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
@@ -98,8 +105,8 @@ public class PanelVenta extends JPanel {
 		});
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnModificar.setIcon(new ImageIcon(PanelVenta.class.getResource("/iconos/Edit-16.png")));
-		btnModificar.setBounds(10, 61, 112, 23);
-		panel.add(btnModificar);
+		btnModificar.setBounds(21, 72, 112, 23);
+		panelOpciones.add(btnModificar);
 		
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -109,31 +116,30 @@ public class PanelVenta extends JPanel {
 				botonGuardar(e);
 			}
 		});
-		btnGuardar.setBounds(132, 60, 118, 23);
-		panel.add(btnGuardar);
+		btnGuardar.setBounds(160, 72, 118, 23);
+		panelOpciones.add(btnGuardar);
 		
 		
-		panel.add(s);
 		
 		JLabel lblSuCambioEs = new JLabel("Su cambio es :");
 		lblSuCambioEs.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSuCambioEs.setForeground(new Color(0, 0, 204));
-		lblSuCambioEs.setBounds(295, 26, 89, 14);
-		panel.add(lblSuCambioEs);
+		lblSuCambioEs.setBounds(313, 26, 89, 14);
+		panelOpciones.add(lblSuCambioEs);
 		
 		tfDinero = new JTextField();
 		tfDinero.setHorizontalAlignment(SwingConstants.CENTER);
 		tfDinero.setBackground(new Color(253, 245, 230));
-		tfDinero.setBounds(295, 62, 86, 20);
-		panel.add(tfDinero);
+		tfDinero.setBounds(313, 62, 86, 20);
+		panelOpciones.add(tfDinero);
 		tfDinero.setColumns(10);
 		
 		lblCambio = new JLabel("0");
 		lblCambio.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCambio.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCambio.setForeground(Color.RED);
-		lblCambio.setBounds(316, 42, 46, 14);
-		panel.add(lblCambio);
+		lblCambio.setBounds(334, 42, 46, 14);
+		panelOpciones.add(lblCambio);
 		
 		JButton btnNewButton = new JButton("");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -142,51 +148,75 @@ public class PanelVenta extends JPanel {
 			}
 		});
 		btnNewButton.setIcon(new ImageIcon(PanelVenta.class.getResource("/iconos/Bank-28.png")));
-		btnNewButton.setBounds(328, 86, 21, 21);
-		panel.add(btnNewButton);
+		btnNewButton.setBounds(346, 86, 21, 21);
+		panelOpciones.add(btnNewButton);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Detalle", Font.BOLD, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(432, 11, 255, 120);
-		add(panel_1);
-		panel_1.setLayout(null);
+		JSeparator separator = new JSeparator();
+		separator.setForeground(new Color(192, 192, 192));
+		separator.setBounds(145, 26, 21, 69);
+		panelOpciones.add(separator);
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBackground(new Color(224, 255, 255));
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setForeground(Color.LIGHT_GRAY);
+		separator_1.setBackground(new Color(224, 255, 255));
+		separator_1.setBounds(288, 26, 21, 69);
+		panelOpciones.add(separator_1);
+		
+		JPanel panelDetalle = new JPanel();
+		panelDetalle.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Detalle", Font.BOLD, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelDetalle.setBounds(432, 11, 255, 120);
+		add(panelDetalle);
+		panelDetalle.setLayout(null);
 		
 		JLabel lblSubtotal = new JLabel("Subtotal   :");
 		lblSubtotal.setForeground(new Color(0, 204, 153));
 		lblSubtotal.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSubtotal.setBounds(10, 31, 74, 14);
-		panel_1.add(lblSubtotal);
+		panelDetalle.add(lblSubtotal);
 		
 		JLabel lblDescuento = new JLabel("Descuento   :");
 		lblDescuento.setForeground(new Color(0, 204, 51));
 		lblDescuento.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDescuento.setBounds(10, 56, 74, 14);
-		panel_1.add(lblDescuento);
+		panelDetalle.add(lblDescuento);
 		
 		JLabel lblTotalAPagar = new JLabel("Total a pagar   :");
 		lblTotalAPagar.setForeground(Color.RED);
 		lblTotalAPagar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblTotalAPagar.setBounds(10, 81, 94, 14);
-		panel_1.add(lblTotalAPagar);
+		panelDetalle.add(lblTotalAPagar);
 		
 		lblnumSubTotal = new JLabel("0");
 		lblnumSubTotal.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblnumSubTotal.setForeground(new Color(0, 204, 153));
 		lblnumSubTotal.setBounds(114, 31, 46, 14);
-		panel_1.add(lblnumSubTotal);
+		panelDetalle.add(lblnumSubTotal);
 		
 		lblnumDescuento = new JLabel("0");
 		lblnumDescuento.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblnumDescuento.setForeground(new Color(0, 204, 102));
 		lblnumDescuento.setBounds(114, 56, 46, 14);
-		panel_1.add(lblnumDescuento);
+		panelDetalle.add(lblnumDescuento);
 		
 		lblnumTotal = new JLabel("0");
 		lblnumTotal.setForeground(Color.RED);
 		lblnumTotal.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblnumTotal.setBounds(114, 81, 46, 14);
-		panel_1.add(lblnumTotal);
+		panelDetalle.add(lblnumTotal);
 		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		separator_2.setForeground(Color.LIGHT_GRAY);
+		separator_2.setBackground(new Color(224, 255, 255));
+		separator_2.setBounds(151, 26, 21, 69);
+		panelDetalle.add(separator_2);
+		
+		lblAnuncio = new JLabel("");
+		lblAnuncio.setBounds(171, 31, 74, 64);
+		panelDetalle.add(lblAnuncio);
 		
 		table=crearTabla();
 		
@@ -221,8 +251,15 @@ public class PanelVenta extends JPanel {
         
         
         JTable tabla = new JTable(dtm);	 	//se crea la Tabla con el modelo DefaultTableModel
+        tabla.setBackground(new Color(220, 220, 220));
+        tabla.setGridColor(new Color(0, 191, 255));
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tabla.setMinimumSize(new Dimension(119, 0));
+        
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
         
         
         //tabla.getTableHeader().setReorderingAllowed(false);  // COLUMNAS FIJAS
@@ -268,7 +305,7 @@ public class PanelVenta extends JPanel {
 				for(int i=0;i<table.getRowCount();i++){
 					String num =table.getValueAt(i, 0).toString();
 					if(Integer.parseInt(num)==aux.getCodigo()){
-						JOptionPane.showMessageDialog(null, " Este producto ya está en la lista, si quiere \ningresar más stock use el botón modificar ", "ERROR", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, " Este producto ya está en la lista, si quiere \ningresar más stock, use el botón modificar ", "ERROR", JOptionPane.WARNING_MESSAGE);
 						noRepetido = false;
 					}
 					
@@ -278,7 +315,8 @@ public class PanelVenta extends JPanel {
 				if(noRepetido){
 					double subtotal = cantidad*aux.getPrecio();
 					Object[] nuevaFila={aux.getCodigo(),aux.getNombre(),cantidad,aux.getPresentacion(),aux.getPrecio(),subtotal};
-			    	dtm.addRow(nuevaFila);	
+					DefaultTableModel model = (DefaultTableModel) table.getModel(); //OBTENCION DEL MODELO
+			    	model.addRow(nuevaFila);	
 			    	aux.setCantidad(aux.getCantidad()-cantidad);
 			    	
 			    	calculo(subtotal);
@@ -305,6 +343,7 @@ public class PanelVenta extends JPanel {
     	System.out.println(contador);
     	if(contador>=3){
     		
+    		lblAnuncio.setText("<html>¡ Descuento por comprar más de 3 productos ! </html>");
     		double sub= Double.parseDouble(lblnumSubTotal.getText());
     		descuento = sub*0.1;
     		lblnumDescuento.setText(Double.toString(descuento));
@@ -388,29 +427,71 @@ public class PanelVenta extends JPanel {
 	
 	private void botonGuardar(ActionEvent e){
 		
-		for(int i=0;i<table.getRowCount();i++){
-			
-			int codigo = Integer.parseInt(table.getValueAt(i, 0).toString());
-			String nombre = (String) table.getValueAt(i,1);
-			int cantidad = (int) table.getValueAt(i, 2);
-			String presentacion = table.getValueAt(i, 3).toString();
-			double precio = (double) table.getValueAt(i, 4);
-			double subtotal = (double) table.getValueAt(i, 5);
 		
-			listaV.insertarFinal(codigo, nombre, cantidad, presentacion, precio, subtotal);
+		Date fechaActual = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String fecha = dateFormat.format(fechaActual);
+	
+		
+		String cliente = JOptionPane.showInputDialog(null, "Ingrese el nombre del cliente");
+		
+		int resp = JOptionPane.showConfirmDialog(null, "¿ Desea realizar esta venta ? ");
+		
+		if(JOptionPane.OK_OPTION == resp){
+			
+			for(int i=0;i<table.getRowCount();i++){
+				
+				int codigo = Integer.parseInt(table.getValueAt(i, 0).toString());
+				String nombre = (String) table.getValueAt(i,1);
+				int cantidad = (int) table.getValueAt(i, 2);
+				String presentacion = table.getValueAt(i, 3).toString();
+				double precio = (double) table.getValueAt(i, 4);
+				double subtotal = (double) table.getValueAt(i, 5);
+				double descuento = Double.parseDouble(lblnumDescuento.getText())/table.getRowCount() ;
+				
+			
+				listaV.insertarFinal(codigo, nombre, cliente, presentacion,cantidad, precio, subtotal,descuento,fecha);
+			}
+			
+			EscribirArchivo.escribirArchivoVenta(listaV);
+			EscribirArchivo.escribirArchivoMedicamentos(listaM);
+			listaV.listar();
+		}else{
+			JOptionPane.showMessageDialog(null, " ¡ No se realizo la venta ! ");
 		}
 		
-		listaV.listar();
-		
+		lblnumSubTotal.setText("0");
+		lblnumDescuento.setText("0");
+		lblnumTotal.setText("0");
+		limpiarTable();
+			
 	}
 	
 	private void botonVuelto(ActionEvent e){
 		
-		double dinero = Double.parseDouble(tfDinero.getText());
-		double total =Double.parseDouble(lblnumTotal.getText());
+		try{
+			double dinero = Double.parseDouble(tfDinero.getText());
+			double total =Double.parseDouble(lblnumTotal.getText());
+			
+			lblCambio.setText(Double.toString(dinero-total));
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, " ¡ Ingrese el dinero ! ", "ERROR", JOptionPane.WARNING_MESSAGE);
+		}
 		
-		lblCambio.setText(Double.toString(dinero-total));
 	}
+	
+	private void limpiarTable(){
+    	
+    	try {
+            DefaultTableModel modelo=(DefaultTableModel) table.getModel();
+            int filas=table.getRowCount();
+            for (int i = 0;i<filas; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
 	
 	
 	public double getSumador() {

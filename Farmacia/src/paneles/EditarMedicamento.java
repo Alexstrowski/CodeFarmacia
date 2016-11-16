@@ -217,7 +217,7 @@ public class EditarMedicamento extends JDialog {
 			dtm.setValueAt(aux.getDolencia(),pos-1,8);
 			
 			
-			EscribirArchivo.EscribirArchivoExcel(lista);
+			EscribirArchivo.escribirArchivoMedicamentos(lista);
 			
 			JOptionPane.showMessageDialog(null, "¡Modificado!");
 			

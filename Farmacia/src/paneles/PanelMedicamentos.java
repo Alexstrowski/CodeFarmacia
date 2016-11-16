@@ -448,7 +448,7 @@ public class PanelMedicamentos extends JPanel {
 	
 	public void escribirArchivo(ListaMedicamento lista){   
 			
-        EscribirArchivo.EscribirArchivoExcel(lista);
+        EscribirArchivo.escribirArchivoMedicamentos(lista);
         
     }
 	

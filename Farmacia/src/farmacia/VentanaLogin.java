@@ -24,7 +24,6 @@ import javax.swing.JPasswordField;
 
 public class VentanaLogin extends JDialog {
 	private JTextField tfUsuario;
-	private JLabel lblNewLabel_1;
 	private JPasswordField tfPass;
 
 	private ListaUsuario listaU = new ListaUsuario();
@@ -44,58 +43,56 @@ public class VentanaLogin extends JDialog {
 		
 		getContentPane().setBackground(new Color(204, 204, 204));
 		setTitle("Proyecto Farmacia");
-		setBounds(100, 100, 395, 300);
+		setBounds(100, 100, 1288, 715);
 		getContentPane().setLayout(null);
 		
 		tfUsuario = new JTextField("");
 		tfUsuario.setToolTipText("");
-		tfUsuario.setBounds(114, 87, 157, 26);
+		tfUsuario.setBounds(577, 267, 157, 26);
 		getContentPane().add(tfUsuario);
 		tfUsuario.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(VentanaLogin.class.getResource("/iconos/User-32.png")));
-		lblNewLabel.setBounds(55, 81, 32, 32);
+		lblNewLabel.setBounds(535, 261, 32, 32);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(VentanaLogin.class.getResource("/iconos/Key-32.png")));
-		label.setBounds(55, 141, 32, 32);
+		label.setBounds(535, 321, 32, 32);
 		getContentPane().add(label);
 		
-		lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/iconos/Doctors Bag-32.png")));
-		lblNewLabel_1.setBounds(90, 24, 32, 26);
-		getContentPane().add(lblNewLabel_1);
-		
-		JButton btnIniciarSesin = new JButton("Iniciar Sesi\u00F3n");
+		JButton btnIniciarSesin = new JButton("");
+		btnIniciarSesin.setIcon(new ImageIcon(VentanaLogin.class.getResource("/fondos/boton-resized.jpg")));
 		btnIniciarSesin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				verificarPerfil(e);
 			}
 		});
-		btnIniciarSesin.setBounds(132, 213, 118, 23);
+		btnIniciarSesin.setBounds(535, 388, 202, 32);
 		getContentPane().add(btnIniciarSesin);
 		
-		JLabel lblFarmaciaUnmsm = new JLabel("FARMACIA UNMSM");
-		lblFarmaciaUnmsm.setForeground(new Color(255, 51, 51));
-		lblFarmaciaUnmsm.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFarmaciaUnmsm.setBounds(132, 24, 140, 26);
-		getContentPane().add(lblFarmaciaUnmsm);
-		
 		tfPass = new JPasswordField();
-		tfPass.setBounds(114, 147, 157, 26);
+		tfPass.setBounds(577, 327, 157, 26);
 		getContentPane().add(tfPass);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
+		lblUsuario.setForeground(Color.BLACK);
+		lblUsuario.setBackground(Color.WHITE);
 		lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblUsuario.setBounds(114, 72, 46, 14);
+		lblUsuario.setBounds(577, 253, 46, 14);
 		getContentPane().add(lblUsuario);
 		
 		JLabel lblContrasea = new JLabel("Contrase\u00F1a");
+		lblContrasea.setForeground(Color.BLACK);
 		lblContrasea.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblContrasea.setBounds(114, 131, 65, 14);
+		lblContrasea.setBounds(577, 314, 65, 14);
 		getContentPane().add(lblContrasea);
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/fondos/loginoficial-resized.png")));
+		label_1.setBounds(0, 0, 1279, 685);
+		getContentPane().add(label_1);
 	}
 	
 	public void verificarPerfil(ActionEvent e){

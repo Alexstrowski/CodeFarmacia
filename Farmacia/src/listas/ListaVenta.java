@@ -29,16 +29,19 @@ public class ListaVenta {
         return tamanio;
     }
 
-    public void insertarFinal(int codigo,String nombre, int cantidad, String presentacion,double precio,double subtotal){
+    public void insertarFinal(int codigo,String nombre,String cliente, String presentacion, int cantidad,double precio,double subtotal,double descuento,String fecha){
         
         NodoVenta nuevo = new NodoVenta();
         
         nuevo.setCodigo(codigo);
         nuevo.setNombre(nombre);
+        nuevo.setCliente(cliente);
         nuevo.setCantidad(cantidad);
         nuevo.setPresentacion(presentacion);
         nuevo.setPrecio(precio);
         nuevo.setSubtotal(subtotal);
+        nuevo.setDescuento(descuento);
+        nuevo.setFecha(fecha);
        
         
         if (esVacia()) {

@@ -14,14 +14,16 @@ import listas.ListaLaboratorio;
 import listas.ListaMedicamento;
 import listas.ListaPresentacion;
 import listas.ListaUsuario;
+import listas.ListaVenta;
 import listas.NodoLaboratorio;
 import listas.NodoMedicamento;
 import listas.NodoPresentacion;
 import listas.NodoUsuario;
+import listas.NodoVenta;
 
 public class EscribirArchivo {
 
-	public static void EscribirArchivoExcel(ListaMedicamento lista){
+	public static void escribirArchivoMedicamentos(ListaMedicamento lista){
 		
 		HSSFWorkbook libro = new HSSFWorkbook();		//Creamos una instancia de la clase HSSFWorkbook llamada libro
         
@@ -315,5 +317,98 @@ public class EscribirArchivo {
             JOptionPane.showMessageDialog(null, "No se pudo crear el Excel :(", "Error",2);
         }
 		
+	}
+	
+	public static void escribirArchivoVenta(ListaVenta lista){
+		
+		HSSFWorkbook libro = new HSSFWorkbook();		//Creamos una instancia de la clase HSSFWorkbook llamada libro
+        
+        HSSFSheet hoja = libro.createSheet("Venta");			//Creamos una instancia de la clase HSSFSheet llamada Laboratorios y la creamos     
+      
+        NodoVenta aux = lista.getInicio();
+        
+        HSSFRow fila = hoja.createRow(0);	// CREA FILA 0
+        
+        HSSFCell celda1 = fila.createCell(0);
+        HSSFCell celda2 = fila.createCell(1);
+        HSSFCell celda3 = fila.createCell(2);
+        HSSFCell celda4 = fila.createCell(3);
+        HSSFCell celda5 = fila.createCell(4);
+        HSSFCell celda6 = fila.createCell(5);
+        HSSFCell celda7 = fila.createCell(6);
+        HSSFCell celda8 = fila.createCell(7);
+        HSSFCell celda9= fila.createCell(8);
+        
+        HSSFRichTextString codigo = new HSSFRichTextString("Código"); 
+        HSSFRichTextString nombre = new HSSFRichTextString("Producto");
+        HSSFRichTextString cliente = new HSSFRichTextString("Cliente");
+        HSSFRichTextString presentacion = new HSSFRichTextString("Presentación");
+        HSSFRichTextString cantidad = new HSSFRichTextString("Cantidad");
+        HSSFRichTextString precio = new HSSFRichTextString("P/Venta");
+        HSSFRichTextString subtotal = new HSSFRichTextString("Subtotal");
+        HSSFRichTextString descuento = new HSSFRichTextString("Descuento");
+        HSSFRichTextString fecha = new HSSFRichTextString("Fecha");
+
+
+    	celda1.setCellValue(codigo); // GUARDAR EN LA CELDA
+    	celda2.setCellValue(nombre);
+    	celda3.setCellValue(cliente);
+    	celda4.setCellValue(presentacion);
+    	celda5.setCellValue(cantidad);
+    	celda6.setCellValue(precio);
+    	celda7.setCellValue(subtotal);
+    	celda8.setCellValue(descuento);
+    	celda9.setCellValue(fecha);
+        
+        int i = 1;
+        
+        while(aux!=null){
+        	
+        	fila = hoja.createRow(i);				//Creamos una instancia de la clase HSSFRow llamada fila y creamos la fila con el indice 0
+            
+        	HSSFCell celdaUno = fila.createCell(0);
+            HSSFCell celdaDos = fila.createCell(1);
+            HSSFCell celdaTres = fila.createCell(2);
+            HSSFCell celdaCuatro = fila.createCell(3);
+            HSSFCell celdaCinco = fila.createCell(4);
+            HSSFCell celdaSeis = fila.createCell(5);
+            HSSFCell celdaSiete = fila.createCell(6);
+            HSSFCell celdaOcho = fila.createCell(7);
+            HSSFCell celdaNueve = fila.createCell(8);
+
+            	
+            HSSFRichTextString txtCodigo = new HSSFRichTextString(Integer.toString(aux.getCodigo()));
+            HSSFRichTextString txtNombre = new HSSFRichTextString(aux.getNombre());
+            HSSFRichTextString txtCantidad = new HSSFRichTextString(Integer.toString(aux.getCantidad()));
+            HSSFRichTextString txtPresentacion = new HSSFRichTextString(aux.getPresentacion());
+            HSSFRichTextString txtPrecio = new HSSFRichTextString(Double.toString(aux.getPrecio()));
+            HSSFRichTextString txtSubtotal= new HSSFRichTextString(Double.toString(aux.getSubtotal()));
+            HSSFRichTextString txtCliente = new HSSFRichTextString(aux.getCliente());
+            HSSFRichTextString txtDescuento = new HSSFRichTextString(Double.toString(aux.getDescuento()));
+            HSSFRichTextString txtFecha= new HSSFRichTextString(aux.getFecha());
+
+            		
+            celdaUno.setCellValue(txtCodigo);
+           	celdaDos.setCellValue(txtNombre);
+           	celdaTres.setCellValue(txtCliente);
+           	celdaCuatro.setCellValue(txtPresentacion);
+           	celdaCinco.setCellValue(txtCantidad);
+           	celdaSeis.setCellValue(txtPrecio);
+           	celdaSiete.setCellValue(txtSubtotal);
+           	celdaOcho.setCellValue(txtDescuento);
+           	celdaNueve.setCellValue(txtFecha);
+           	aux=aux.getSiguiente();
+           	i++;
+        	
+        } 
+        
+        try{
+            FileOutputStream archivo = new FileOutputStream("ventas.xls");
+            libro.write(archivo);
+            archivo.close();
+           
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "No se pudo crear el Excel :(", "Error",2);
+        }
 	}
 }
