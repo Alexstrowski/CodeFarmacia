@@ -264,7 +264,13 @@ public class PanelUsuario extends JPanel {
                                 "Contraseña"};
         
      
-        dtm= new DefaultTableModel(data, columnNames);	//creamos el Modelo de la tabla con los datos anteriores
+        dtm= new DefaultTableModel(data, columnNames){
+        	
+        	public boolean isCellEditable(int row, int column) {
+				return false;
+        	}
+        	
+        };	//creamos el Modelo de la tabla con los datos anteriores
         JTable tabla = new JTable(dtm);	 	//se crea la Tabla con el modelo DefaultTableModel
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tabla.setMinimumSize(new Dimension(119, 0));
