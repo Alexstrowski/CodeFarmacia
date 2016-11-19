@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
@@ -62,15 +63,15 @@ public class VentanaLogin extends JDialog {
 		label.setBounds(535, 321, 32, 32);
 		getContentPane().add(label);
 		
-		JButton btnIniciarSesin = new JButton("");
-		btnIniciarSesin.setIcon(new ImageIcon(VentanaLogin.class.getResource("/fondos/boton-resized.jpg")));
-		btnIniciarSesin.addActionListener(new ActionListener() {
+		JButton btnIniciarSesion = new JButton("");
+		btnIniciarSesion.setIcon(new ImageIcon(VentanaLogin.class.getResource("/fondos/boton-resized.jpg")));
+		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				verificarPerfil(e);
 			}
 		});
-		btnIniciarSesin.setBounds(535, 388, 202, 32);
-		getContentPane().add(btnIniciarSesin);
+		btnIniciarSesion.setBounds(535, 388, 202, 32);
+		getContentPane().add(btnIniciarSesion);
 		
 		tfPass = new JPasswordField();
 		tfPass.setBounds(577, 327, 157, 26);
@@ -129,7 +130,6 @@ public class VentanaLogin extends JDialog {
 			JOptionPane.showMessageDialog(null, "Usuario inválido",
 					  "Usuario inválido", JOptionPane.WARNING_MESSAGE);
 		}
-		
 		
 		
 		

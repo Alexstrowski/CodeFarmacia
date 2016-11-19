@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
+import javax.swing.ImageIcon;
 
 public class PanelReporte extends JPanel {
 
@@ -70,6 +71,8 @@ public class PanelReporte extends JPanel {
 		panelBuscar.add(dcHasta);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnBuscar.setIcon(new ImageIcon(PanelReporte.class.getResource("/iconos/Search-16.png")));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -80,7 +83,7 @@ public class PanelReporte extends JPanel {
 				}
 			}
 		});
-		btnBuscar.setBounds(163, 88, 89, 23);
+		btnBuscar.setBounds(163, 88, 95, 23);
 		panelBuscar.add(btnBuscar);
 		
 		JPanel panelDetalle = new JPanel();
@@ -193,15 +196,7 @@ public class PanelReporte extends JPanel {
         	tabla.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
         
-       /* NodoVenta aux = listaV.getInicio();
-        
-        while(aux!=null){
-        	Object[] nuevaFila={aux.getCodigo(),aux.getNombre(),aux.getCliente(),aux.getPresentacion(),aux.getCantidad(),aux.getPrecio(),aux.getSubtotal(),aux.getDescuento(),aux.getFecha()};
-        	dtm.addRow(nuevaFila);
-        	aux=aux.getSiguiente();
-        	
-        }
-   */
+
 
 		
         return tabla;
@@ -209,59 +204,64 @@ public class PanelReporte extends JPanel {
 
 	public void botonBuscar(ActionEvent e) throws ParseException{
 		
-		double sumaTotal = 0;
-		double descuentoTotal = 0;
-		double ganancia = 0;
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		
-		String dia1 = Integer.toString(dcDesde.getCalendar().get(Calendar.DAY_OF_MONTH));
-		String mes1 = Integer.toString(dcDesde.getCalendar().get(Calendar.MONTH) + 1);
-		String year1 = Integer.toString(dcDesde.getCalendar().get(Calendar.YEAR));
-		Date calendario = dateFormat.parse(dia1 + "/" + mes1+ "/" + year1);
-		
-		String dia2 = Integer.toString(dcHasta.getCalendar().get(Calendar.DAY_OF_MONTH));
-		String mes2 = Integer.toString(dcHasta.getCalendar().get(Calendar.MONTH) + 1);
-		String year2 = Integer.toString(dcHasta.getCalendar().get(Calendar.YEAR));
-		Date calendario2 = dateFormat.parse(dia2 + "/" + mes2+ "/" + year2);
-		
-		NodoVenta aux = listaV.getInicio();
-        
-		limpiarTable();
-		
-        while(aux!=null){
-        	
-        	Date fechaCompra = dateFormat.parse(aux.getFecha());
-        	
-        	if( (fechaCompra.after(calendario) ||fechaCompra.equals(calendario)) && (fechaCompra.before(calendario2) || fechaCompra.equals(calendario2))){
-        		Object[] nuevaFila={aux.getCodigo(),aux.getNombre(),aux.getCliente(),aux.getPresentacion(),aux.getCantidad(),aux.getPrecio(),aux.getSubtotal(),aux.getDescuento(),aux.getFecha()};
-            	dtm.addRow(nuevaFila);
-     	
-        	}
-        
-        	aux=aux.getSiguiente();
-        }
-        
-        
-        for(int i=0;i<table.getRowCount();i++){
+		try{
+			double sumaTotal = 0;
+			double descuentoTotal = 0;
+			double ganancia = 0;
 			
-			double subtotal = (double) table.getValueAt(i, 6);
-			sumaTotal = sumaTotal + subtotal;
-		
-		}
-        
-        lblVenta.setText(Double.toString(sumaTotal));
-        
-        for(int i=0;i<table.getRowCount();i++){
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			
-			double descuento = (double) table.getValueAt(i, 7);
-			descuentoTotal = descuentoTotal + descuento;
-		
+			String dia1 = Integer.toString(dcDesde.getCalendar().get(Calendar.DAY_OF_MONTH));
+			String mes1 = Integer.toString(dcDesde.getCalendar().get(Calendar.MONTH) + 1);
+			String year1 = Integer.toString(dcDesde.getCalendar().get(Calendar.YEAR));
+			Date calendario = dateFormat.parse(dia1 + "/" + mes1+ "/" + year1);
+			
+			String dia2 = Integer.toString(dcHasta.getCalendar().get(Calendar.DAY_OF_MONTH));
+			String mes2 = Integer.toString(dcHasta.getCalendar().get(Calendar.MONTH) + 1);
+			String year2 = Integer.toString(dcHasta.getCalendar().get(Calendar.YEAR));
+			Date calendario2 = dateFormat.parse(dia2 + "/" + mes2+ "/" + year2);
+			
+			NodoVenta aux = listaV.getInicio();
+	        
+			limpiarTable();
+			
+	        while(aux!=null){
+	        	
+	        	Date fechaCompra = dateFormat.parse(aux.getFecha());
+	        	
+	        	if( (fechaCompra.after(calendario) ||fechaCompra.equals(calendario)) && (fechaCompra.before(calendario2) || fechaCompra.equals(calendario2))){
+	        		Object[] nuevaFila={aux.getCodigo(),aux.getNombre(),aux.getCliente(),aux.getPresentacion(),aux.getCantidad(),aux.getPrecio(),aux.getSubtotal(),aux.getDescuento(),aux.getFecha()};
+	            	dtm.addRow(nuevaFila);
+	     	
+	        	}
+	        
+	        	aux=aux.getSiguiente();
+	        }
+	        
+	        
+	        for(int i=0;i<table.getRowCount();i++){
+				
+				double subtotal = (double) table.getValueAt(i, 6);
+				sumaTotal = sumaTotal + subtotal;
+			
+			}
+	        
+	        lblVenta.setText(Double.toString(Redondear(sumaTotal,2)));
+	        
+	        for(int i=0;i<table.getRowCount();i++){
+				
+				double descuento = (double) table.getValueAt(i, 7);
+				descuentoTotal = descuentoTotal + descuento;
+			
+			}
+	        
+	        lblDescuento.setText(Double.toString(Redondear(descuentoTotal,2)));
+	        ganancia = sumaTotal-descuentoTotal;
+	        lblGanancia.setText(Double.toString(Redondear(ganancia,2)));
+		}catch(Exception ex){
+			 JOptionPane.showMessageDialog(null, " ¡ Ingrese las fechas ! ");
 		}
-        
-        lblDescuento.setText(Double.toString(descuentoTotal));
-        ganancia = sumaTotal-descuentoTotal;
-        lblGanancia.setText(Double.toString(ganancia));
+		
 		
 	}
 	
@@ -277,4 +277,9 @@ public class PanelReporte extends JPanel {
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
     }
+	
+	public double Redondear(double numero,int digitos) { 
+		int cifras=(int) Math.pow(10,digitos); 
+		return Math.rint(numero*cifras)/cifras; 
+	}
 }

@@ -74,7 +74,7 @@ public class VentanaMenu extends JFrame {
 	ListaPresentacion listaP = new ListaPresentacion();
 	private JButton btnReporte;
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -85,7 +85,7 @@ public class VentanaMenu extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -205,7 +205,9 @@ public class VentanaMenu extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(1);
+				VentanaLogin vm = new VentanaLogin();
+				vm.setVisible(true);	
+				dispose();
 			}
 		});
 		btnSalir.setIcon(new ImageIcon(VentanaMenu.class.getResource("/iconos/Exit Sign-32.png")));
@@ -254,6 +256,11 @@ public class VentanaMenu extends JFrame {
 		
 		
 		btnVenta = new JButton("Venta");
+		btnVenta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnVenta.setIcon(new ImageIcon(VentanaMenu.class.getResource("/iconos/Sell-32.png")));
 		btnVenta.setBounds(0, 0, 118, 83);
 		btnVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnVenta.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -268,6 +275,22 @@ public class VentanaMenu extends JFrame {
 		PanelVenta pv = new PanelVenta(listaM,listaV);
 		JPanel panelVenta = pv;
 		panelesFarmaceutico.add(panelVenta,"panelVenta");
+		
+		JButton btnSalir2 = new JButton("Salir");
+		btnSalir2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaLogin vm = new VentanaLogin();
+				vm.setVisible(true);	
+				dispose();
+			}
+		});
+		btnSalir2.setIcon(new ImageIcon(VentanaMenu.class.getResource("/iconos/Exit Sign-32.png")));
+		btnSalir2.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnSalir2.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnSalir2.setForeground(Color.BLACK);
+		btnSalir2.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnSalir2.setBounds(115, 0, 118, 83);
+		panelBotonesFarma.add(btnSalir2);
 		
 				
 	}

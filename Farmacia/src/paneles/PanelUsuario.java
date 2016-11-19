@@ -468,7 +468,7 @@ public class PanelUsuario extends JPanel {
         }
         
 
-        trsFiltro.setRowFilter(RowFilter.regexFilter(tfBuscar.getText(), columnaABuscar));
+        trsFiltro.setRowFilter(RowFilter.regexFilter("(?i)"+tfBuscar.getText(), columnaABuscar));
 	}
 	
 	private void txtFiltroKeyTyped(java.awt.event.KeyEvent e) {

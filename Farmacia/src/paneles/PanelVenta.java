@@ -313,7 +313,7 @@ public class PanelVenta extends JPanel {
 				
 				
 				if(noRepetido){
-					double subtotal = cantidad*aux.getPrecio();
+					double subtotal = Redondear(cantidad*aux.getPrecio(),2);
 					Object[] nuevaFila={aux.getCodigo(),aux.getNombre(),cantidad,aux.getPresentacion(),aux.getPrecio(),subtotal};
 					DefaultTableModel model = (DefaultTableModel) table.getModel(); //OBTENCION DEL MODELO
 			    	model.addRow(nuevaFila);	
@@ -335,17 +335,20 @@ public class PanelVenta extends JPanel {
 	}
 	
 	
+
 	public void calculo(double subtotal){
 		
 		setSumador(getSumador()+subtotal);
-    	lblnumSubTotal.setText(Double.toString(sumador));
+    	lblnumSubTotal.setText(Double.toString(Redondear(sumador,2)));
     	double descuento = 0;
     	System.out.println(contador);
-    	if(contador>=3){
+    	if(table.getRowCount()>=3){
     		
     		lblAnuncio.setText("<html>¡ Descuento por comprar más de 3 productos ! </html>");
+    		lblAnuncio.setVisible(true);
     		double sub= Double.parseDouble(lblnumSubTotal.getText());
     		descuento = sub*0.1;
+    		descuento=Redondear(descuento,2);
     		lblnumDescuento.setText(Double.toString(descuento));
     		
     	}
@@ -368,11 +371,16 @@ public class PanelVenta extends JPanel {
 		
 		setSumador(getSumador()-subtotal);
 		lblnumSubTotal.setText(Double.toString(sumador));
-		contador--;
 		
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		model.removeRow(table.getSelectedRow()); 	
 		
+		if(table.getRowCount()<=2){
+			
+			lblAnuncio.setVisible(false);
+			lblnumDescuento.setText("0");
+			lblnumTotal.setText(Double.toString(sumador));
+		}
 	}
 	
 	
@@ -389,38 +397,41 @@ public class PanelVenta extends JPanel {
 		
 		double subtotal;
 		
-		int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad del producto "));
-		
-		NodoMedicamento aux = listaM.buscarNodo(codigo);
-		
-		
-		if(cantidad <= aux.getCantidad()){
-			table.setValueAt(cantidad, fila, 2);
+		try{
+			int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad del producto "));
 			
-			if(cantidadTabla>cantidad){
-				diferencia = cantidadTabla-cantidad;
-				listaM.devolverCantidad(codigo, diferencia);
-				subtotal = precio*diferencia;
-				setSumador(getSumador()-subtotal);
+			NodoMedicamento aux = listaM.buscarNodo(codigo);
 			
+			
+			if(cantidad <= aux.getCantidad()){
+				table.setValueAt(cantidad, fila, 2);
+				
+				if(cantidadTabla>cantidad){
+					diferencia = cantidadTabla-cantidad;
+					listaM.devolverCantidad(codigo, diferencia);
+					subtotal = precio*diferencia;
+					setSumador(getSumador()-subtotal);
+				
+				}else{
+					diferencia=cantidad-cantidadTabla;
+					listaM.sacarCantidad(codigo, diferencia);
+					subtotal = precio*diferencia;
+					setSumador(getSumador()+subtotal);
+			
+				}
+				
+				
+				double nuevoSubtotal = precio*cantidad;
+				table.setValueAt(nuevoSubtotal, fila, 5);
+				
+				
+				lblnumSubTotal.setText(Double.toString(sumador));
 			}else{
-				diferencia=cantidad-cantidadTabla;
-				listaM.sacarCantidad(codigo, diferencia);
-				subtotal = precio*diferencia;
-				setSumador(getSumador()+subtotal);
-		
+				JOptionPane.showMessageDialog(null, " ¡ No hay stock suficiente ! \n Stock disponible : "+aux.getCantidad(), "ERROR", JOptionPane.WARNING_MESSAGE);
 			}
-			
-			
-			double nuevoSubtotal = precio*cantidad;
-			table.setValueAt(nuevoSubtotal, fila, 5);
-			
-			
-			lblnumSubTotal.setText(Double.toString(sumador));
-		}else{
-			JOptionPane.showMessageDialog(null, " ¡ No hay stock suficiente ! \n Stock disponible : "+aux.getCantidad(), "ERROR", JOptionPane.WARNING_MESSAGE);
-		}
-		
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, " ¡ Ingrese un número ! ", "ERROR", JOptionPane.WARNING_MESSAGE);
+		}	
 		
 		
 	}
@@ -472,12 +483,18 @@ public class PanelVenta extends JPanel {
 		try{
 			double dinero = Double.parseDouble(tfDinero.getText());
 			double total =Double.parseDouble(lblnumTotal.getText());
+			double cambio=Redondear(dinero-total,2);
 			
-			lblCambio.setText(Double.toString(dinero-total));
+			lblCambio.setText(Double.toString(cambio));
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, " ¡ Ingrese el dinero ! ", "ERROR", JOptionPane.WARNING_MESSAGE);
 		}
 		
+	}
+	
+	public double Redondear(double numero,int digitos) { 
+		int cifras=(int) Math.pow(10,digitos); 
+		return Math.rint(numero*cifras)/cifras; 
 	}
 	
 	private void limpiarTable(){
@@ -495,6 +512,7 @@ public class PanelVenta extends JPanel {
 	
 	
 	public double getSumador() {
+		sumador=Redondear(sumador,2);
 		return sumador;
 	}
 

@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import farmacia.CargarArchivo;
 import farmacia.EscribirArchivo;
@@ -49,7 +50,7 @@ public class PanelLaboratorio extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNombreDelLaboratorio = new JLabel("Nombre del laboratorio:");
+		JLabel lblNombreDelLaboratorio = new JLabel("Nombre del laboratorio :");
 		lblNombreDelLaboratorio.setBounds(71, 42, 137, 14);
 		panel.add(lblNombreDelLaboratorio);
 		
@@ -156,6 +157,13 @@ public class PanelLaboratorio extends JPanel {
         
         tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
         
+        // COLOR DEL HEADER // 
+        
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
+        // LLENADO DE LA TABLA //
         
         // LLenado de la tabla //
 		

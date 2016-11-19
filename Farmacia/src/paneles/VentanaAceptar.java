@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import farmacia.Validacion;
 import listas.ListaMedicamento;
 import listas.ListaVenta;
 import listas.NodoMedicamento;
@@ -79,8 +80,11 @@ public class VentanaAceptar extends JDialog {
 		tfBuscar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				Validacion.validarLetra(e);
 				txtFiltroKeyTyped(e);
 			}
+			
+						
 		});
 		tfBuscar.setBackground(new Color(204, 255, 255));
 		tfBuscar.setBounds(297, 26, 137, 20);
@@ -93,6 +97,11 @@ public class VentanaAceptar extends JDialog {
 		lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		tfCantidad = new JTextField();
+		tfCantidad.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				Validacion.validarNumero(e);
+			}
+		});
 		tfCantidad.setBackground(new Color(204, 255, 255));
 		tfCantidad.setBounds(297, 51, 137, 20);
 		getContentPane().add(tfCantidad);
@@ -204,7 +213,7 @@ public class VentanaAceptar extends JDialog {
             
         }
         
-        trsFiltro.setRowFilter(RowFilter.regexFilter(tfBuscar.getText(), columnaABuscar));
+        trsFiltro.setRowFilter(RowFilter.regexFilter("(?i)"+tfBuscar.getText(), columnaABuscar));
 	}
 	
 	

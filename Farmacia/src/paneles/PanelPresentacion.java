@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import farmacia.EscribirArchivo;
 import farmacia.Validacion;
@@ -27,6 +28,7 @@ import listas.NodoLaboratorio;
 import listas.NodoPresentacion;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.UIManager;
 
 public class PanelPresentacion extends JPanel {
 	private JTextField tfPresentacion;
@@ -43,13 +45,13 @@ public class PanelPresentacion extends JPanel {
 		lista = p;
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Presentacion", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Presentaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel.setToolTipText("Presentaci\u00F3n");
 		panel.setBounds(80, 43, 519, 190);
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblPresentacion = new JLabel("Nombre de Presentacion:");
+		JLabel lblPresentacion = new JLabel("Nombre de Presentaci\u00F3n :");
 		lblPresentacion.setBounds(71, 42, 156, 14);
 		panel.add(lblPresentacion);
 		
@@ -155,7 +157,14 @@ public class PanelPresentacion extends JPanel {
         
         tabla.getColumnModel().getColumn(0).setCellRenderer(tcr);
         
+	
+        // COLOR DEL HEADER // 
         
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
+      
         // LLenado de la tabla //
 		
         NodoPresentacion aux = lista.getInicio();

@@ -1,10 +1,12 @@
 package paneles;
 
+import java.awt.AWTException;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.HeadlessException;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -32,6 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -63,7 +66,9 @@ public class PanelMedicamentos extends JPanel {
 	private TableRowSorter trsFiltro;
 	private JComboBox tfLab;
 	private JComboBox tfPresentacion;
-	
+	private boolean filtroTabla=false;
+
+
 	ListaMedicamento listaM = new ListaMedicamento();
 	ListaLaboratorio listaL = new ListaLaboratorio();
 	ListaPresentacion listaP = new ListaPresentacion();
@@ -338,6 +343,12 @@ public class PanelMedicamentos extends JPanel {
         	tabla.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
         
+        // COLOR DEL HEADER // 
+        
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
         // LLENADO DE LA TABLA //
         
         
@@ -413,18 +424,40 @@ public class PanelMedicamentos extends JPanel {
 		int ax = JOptionPane.showConfirmDialog(null, "¿ Está seguro de eliminar el medicamento ?");
         if(ax == JOptionPane.YES_OPTION){
         	DefaultTableModel model = (DefaultTableModel)table.getModel();
-    		int fila = table.getSelectedRow()+1;
-    		listaM.eliminar(fila);
-    		model.removeRow(table.getSelectedRow()); 
+        	
+        	int modelIndex = 0;
+    		int fila = table.getSelectedRow();
     		
-    		
-    		limpiarTable();
-    		// LLENADO DE LA TABLA //
-            actualizarTabla();
+    		if(filtroTabla){
+    			
+    			modelIndex = table.convertRowIndexToModel(fila);
+    			modelIndex++;
+    			listaM.eliminar(modelIndex);
+    			model.removeRow(table.getSelectedRow()); 
+    			setFiltroTabla(false);
+    		}else{
+    			int indiceTablaOrdenada = table.convertRowIndexToView(fila);
+    			indiceTablaOrdenada++;
+    			listaM.eliminar(indiceTablaOrdenada);
+    			model.removeRow(table.getSelectedRow()); 
+    		}
+
             
             JOptionPane.showMessageDialog(null, "¡ Medicamento eliminado !");
         }
 		
+	        tfBuscar.requestFocus();
+			Robot robot;
+			try {
+				robot = new Robot();
+				robot.keyPress(KeyEvent.VK_BACK_SPACE);
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}
+			tfBuscar.setText("");
+			
+			((DefaultTableModel)table.getModel()).setRowCount( 0); // limpiar JTABLE OPTIMIZADO
+			actualizarTabla();
 		
 	
 	}
@@ -432,15 +465,36 @@ public class PanelMedicamentos extends JPanel {
 	
 	private void botonEditar(java.awt.event.ActionEvent evt){
 		
-		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		int fila = table.getSelectedRow()+1;
-		
+		tfBuscar.requestFocus();
+		Robot robot;
+		try {
+			robot = new Robot();
+			robot.keyPress(KeyEvent.VK_BACK_SPACE);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+
+		int fila = table.getSelectedRow();
+		int modelIndex = 0;	
 		NodoMedicamento aux=null;
-		aux=listaM.buscarNodo(fila);
+		
+		if(filtroTabla){
+			
+			modelIndex = table.convertRowIndexToModel(fila);
+			modelIndex++;
+			aux=listaM.buscarNodo(modelIndex);
+			fila = modelIndex;
+			setFiltroTabla(false);
+		}else{
+			int indiceTablaOrdenada = table.convertRowIndexToView(fila);
+			indiceTablaOrdenada++;
+			aux=listaM.buscarNodo(indiceTablaOrdenada);
+			fila = indiceTablaOrdenada;
+		}
 		
 		EditarMedicamento em = new EditarMedicamento(aux,listaM,listaL,listaP,fila,dtm);
 		em.setVisible(true);
-		
+		tfBuscar.setText("");
 		
 	}
 	
@@ -481,7 +535,7 @@ public class PanelMedicamentos extends JPanel {
             columnaABuscar = 2;
             
         }
-        trsFiltro.setRowFilter(RowFilter.regexFilter(tfBuscar.getText(), columnaABuscar));
+        trsFiltro.setRowFilter(RowFilter.regexFilter("(?i)"+tfBuscar.getText(), columnaABuscar));
 	}
 	
 	
@@ -496,7 +550,7 @@ public class PanelMedicamentos extends JPanel {
 			}
 		});
 		
-		
+		setFiltroTabla(true);
 		trsFiltro = new TableRowSorter(table.getModel());
 		table.setRowSorter(trsFiltro);
     }
@@ -544,19 +598,6 @@ public class PanelMedicamentos extends JPanel {
 	}
 	
 
-	
-    private void limpiarTable(){
-    	
-    	try {
-            DefaultTableModel modelo=(DefaultTableModel) table.getModel();
-            int filas=table.getRowCount();
-            for (int i = 0;i<filas; i++) {
-                modelo.removeRow(0);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
-        }
-    }
     
     private void actualizarTabla(){
     	
@@ -575,6 +616,14 @@ public class PanelMedicamentos extends JPanel {
         
         escribirArchivo(listaM);
     }
+
+	public boolean isFiltroTabla() {
+		return filtroTabla;
+	}
+
+	public void setFiltroTabla(boolean filtroTabla) {
+		this.filtroTabla = filtroTabla;
+	}
 }
 	
 
