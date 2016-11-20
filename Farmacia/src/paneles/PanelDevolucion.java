@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import listas.ListaDevolucion;
 import listas.ListaLaboratorio;
@@ -186,7 +187,7 @@ public class PanelDevolucion extends JPanel {
 		
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 241, 677, 232);
+		scrollPane.setBounds(10, 196, 677, 277);
 		add(scrollPane);
 	}
 	
@@ -237,6 +238,11 @@ public class PanelDevolucion extends JPanel {
         for(int i=0; i<7 ; i++){
         	tabla.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
+        
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
         
         // LLENADO DE LA TABLA //
         

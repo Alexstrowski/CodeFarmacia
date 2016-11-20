@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,7 +24,7 @@ import farmacia.ValidarCampo;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class EditarPresentacion extends JFrame {
+public class EditarPresentacion extends JDialog {
 
 	private final JPanel contentPanels;
 	private JTextField tfPres;
@@ -41,7 +42,7 @@ public class EditarPresentacion extends JFrame {
 		this.dtm=dtm;
 		this.aux=aux;
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Editar Presentacion");
 		setBounds(100, 100, 450, 257);
 		contentPanels = new JPanel();
 		contentPanels.setBorder(new EmptyBorder(5, 5, 5, 5));
