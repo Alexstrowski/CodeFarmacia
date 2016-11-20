@@ -341,7 +341,7 @@ public class PanelVenta extends JPanel {
 		setSumador(getSumador()+subtotal);
     	lblnumSubTotal.setText(Double.toString(Redondear(sumador,2)));
     	double descuento = 0;
-    	System.out.println(contador);
+ 
     	if(table.getRowCount()>=3){
     		
     		lblAnuncio.setText("<html>¡ Descuento por comprar más de 3 productos ! </html>");
@@ -442,9 +442,18 @@ public class PanelVenta extends JPanel {
 		Date fechaActual = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String fecha = dateFormat.format(fechaActual);
-	
+		String cliente="";
+		ConfirmarVenta vc = new ConfirmarVenta();
 		
-		String cliente = JOptionPane.showInputDialog(null, "Ingrese el nombre del cliente");
+		while(vc.getValido()){
+			vc.setModal(true);
+			vc.setVisible(true);
+			cliente = vc.getCliente();
+			
+		}
+		
+	
+		//String cliente = JOptionPane.showInputDialog(null, "Ingrese el nombre del cliente");
 		
 		int resp = JOptionPane.showConfirmDialog(null, "¿ Desea realizar esta venta ? ");
 		
@@ -466,14 +475,26 @@ public class PanelVenta extends JPanel {
 			
 			EscribirArchivo.escribirArchivoVenta(listaV);
 			EscribirArchivo.escribirArchivoMedicamentos(listaM);
-			listaV.listar();
+		
 		}else{
+			
+			for(int i=0;i<table.getRowCount();i++){
+				
+				int codigo = Integer.parseInt(table.getValueAt(i, 0).toString());
+				int cantidad = (int) table.getValueAt(i, 2);
+				listaM.devolverCantidad(codigo, cantidad);
+
+			}
+	
 			JOptionPane.showMessageDialog(null, " ¡ No se realizo la venta ! ");
 		}
 		
+		setSumador(0);
+		setDescuento(0);
 		lblnumSubTotal.setText("0");
 		lblnumDescuento.setText("0");
 		lblnumTotal.setText("0");
+		lblAnuncio.setVisible(false);
 		limpiarTable();
 			
 	}

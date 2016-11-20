@@ -89,7 +89,7 @@ public class EditarMedicamento extends JDialog {
 		contentPanel.add(lblPrecioDeCompra);
 		
 		JLabel lblVencimiento = new JLabel("Vencimiento :");
-		lblVencimiento.setBounds(48, 164, 66, 14);
+		lblVencimiento.setBounds(48, 164, 91, 14);
 		contentPanel.add(lblVencimiento);
 		
 		JLabel lblDolencia = new JLabel("Dolencia :");
@@ -186,7 +186,7 @@ public class EditarMedicamento extends JDialog {
 		
 		ValidarCampo vc = new ValidarCampo();
 		
-		if(vc.validarNombre(tfNombre) && vc.validarCantidad(tfCantidad) && vc.validarFecha(tfFecha) && vc.validarVenta(tfPrecio) && vc.validarCompra(tfCosto) && vc.validarDolencia(tfDolencia)){
+		if(vc.validarNombre(tfNombre) && vc.validarCantidad(tfCantidad) && vc.validarFecha(tfFecha) && vc.validarVenta(tfPrecio) && vc.validarCompra(tfCosto) && vc.validarDolencia(tfDolencia) && vc.validarPrecios(tfPrecio, tfCosto)){
 		
 			int codigo = lista.dimension()+1;
 			String nombre = tfNombre.getText();

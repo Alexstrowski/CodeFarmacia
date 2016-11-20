@@ -252,4 +252,20 @@ public class ListaMedicamento {
         }
     	
     }
+    
+    public String [] retornarArregloPre(){
+    	String arreglo [] = new String[dimension()];
+    	int i=0;
+    	
+    	NodoMedicamento aux = inicio;
+		 
+		while(aux!=null){
+			 
+			 arreglo[i]=Integer.toString(aux.getCodigo());
+			 aux=aux.getSiguiente(); 
+			 i++;
+		} 
+    	
+    	return arreglo;
+    }
 }

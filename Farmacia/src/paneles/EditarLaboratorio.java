@@ -91,19 +91,26 @@ public class EditarLaboratorio extends JDialog {
 		
 		ValidarCampo vc = new ValidarCampo();
 		
-		if(vc.validarCampo(tfLabo)){
+		if(vc.validarCampo(tfLabo)){	
 			
 			String laboratorio = tfLabo.getText();
 			
-			lista.editarPorPosicion(pos,laboratorio);
+			if(lista.verificarRepetido(laboratorio)){
+				
+				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
+				
+			}else{
 			
-			dtm.setValueAt(aux.getLaboratorio(),pos-1,0);
+				lista.editarPorPosicion(pos,laboratorio);
+			
+				dtm.setValueAt(aux.getLaboratorio(),pos-1,0);
 		
-			EscribirArchivo.escribirArchivoLaboratorio(lista);
+				EscribirArchivo.escribirArchivoLaboratorio(lista);
 			
-			JOptionPane.showMessageDialog(null, "¡Modificado!");
+				JOptionPane.showMessageDialog(null, "¡Modificado!");
 			
-			setVisible(false);
+				setVisible(false);
+			}
 		}			
 	
 	}

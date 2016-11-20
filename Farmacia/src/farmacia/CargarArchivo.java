@@ -6,6 +6,7 @@ import java.io.IOException;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import listas.ListaDevolucion;
 import listas.ListaLaboratorio;
 import listas.ListaMedicamento;
 import listas.ListaPresentacion;
@@ -172,6 +173,44 @@ public class CargarArchivo {
 					}
 					lista.insertarFinal(Integer.parseInt(data[0]),data[1],data[2],data[3],Integer.parseInt(data[4]),Double.parseDouble(data[5]),Double.parseDouble(data[6]),Double.parseDouble(data[7]),data[8]);
 				}	
+			
+		} catch (BiffException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	public static void cargarArchivoDevolucion(ListaDevolucion lista){
+		
+
+		File archivo = new File("devolucion.xls");
+		
+		try {
+			
+			Workbook leerExcel = jxl.Workbook.getWorkbook(archivo);
+			
+			for(int hoja = 0 ; hoja<leerExcel.getNumberOfSheets(); hoja++){
+				
+				Sheet hojaP = leerExcel.getSheet(hoja);
+				int columnas = hojaP.getColumns();
+				int filas = hojaP.getRows();				
+				
+				String data[]= new String[columnas];
+				
+				for(int fila = 1; fila<filas; fila++){
+					
+					for(int columna = 0 ; columna<columnas ; columna++){
+						
+							data[columna]= hojaP.getCell(columna, fila).getContents();
+							
+					}
+					lista.insertarFinal(Integer.parseInt(data[0]),data[1],data[2],Integer.parseInt(data[3]),data[4],Double.parseDouble(data[5]),data[6]);
+				}
+			}
+			
 			
 		} catch (BiffException e) {
 			

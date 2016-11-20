@@ -89,17 +89,24 @@ public class EditarPresentacion extends JFrame {
 		
 		if(vc.validarCampo(tfPres)){
 			
-			String laboratorio = tfPres.getText();
+			String presentacion = tfPres.getText();
 			
-			lista.editarPorPosicion(pos,laboratorio);
+			if(lista.verificarRepetido(presentacion)){
+				
+				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
+				
+			}else{
 			
-			dtm.setValueAt(aux.getPresentacion(),pos-1,0);
+				lista.editarPorPosicion(pos,presentacion);
+			
+				dtm.setValueAt(aux.getPresentacion(),pos-1,0);
 		
-			EscribirArchivo.escribirArchivoPresentacion(lista);
+				EscribirArchivo.escribirArchivoPresentacion(lista);
 			
-			JOptionPane.showMessageDialog(null, "¡Modificado!");
+				JOptionPane.showMessageDialog(null, "¡Modificado!");
 			
-			setVisible(false);
+				setVisible(false);
+			}	
 			
 		}
 	}

@@ -135,4 +135,13 @@ public class ValidarCampo {
 		
 		return calendario.compareTo(fechaActual);
 	}
+	
+	public boolean validarPrecios(JTextField tfPrecio,JTextField tfCosto ){
+		
+		if(Double.parseDouble(tfCosto.getText())>Double.parseDouble(tfPrecio.getText())){
+			JOptionPane.showMessageDialog(null, "¡ El P/Compra no puede ser mayor a P/Venta !","Error",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
 }

@@ -29,6 +29,7 @@ import listas.ListaPresentacion;
 import listas.ListaUsuario;
 import listas.ListaVenta;
 import listas.NodoMedicamento;
+import paneles.PanelDevolucion;
 import paneles.PanelLaboratorio;
 import paneles.PanelMedicamentos;
 import paneles.PanelPresentacion;
@@ -73,6 +74,7 @@ public class VentanaMenu extends JFrame {
 	ListaLaboratorio listaL = new ListaLaboratorio();
 	ListaPresentacion listaP = new ListaPresentacion();
 	private JButton btnReporte;
+	private JButton btnDevolucion;
 	
 	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -226,6 +228,7 @@ public class VentanaMenu extends JFrame {
 		cargarArchivo(listaP);
 		cargarArchivo(listaV);
 		
+		
 		panelesAdmi = new JPanel();
 		panelesAdmi.setBounds(0, 83, 697, 484);
 		panelBotones.add(panelesAdmi);
@@ -256,10 +259,12 @@ public class VentanaMenu extends JFrame {
 		
 		
 		btnVenta = new JButton("Venta");
-		btnVenta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnVenta.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				botonesFarma(e);
 			}
 		});
+
 		btnVenta.setIcon(new ImageIcon(VentanaMenu.class.getResource("/iconos/Sell-32.png")));
 		btnVenta.setBounds(0, 0, 118, 83);
 		btnVenta.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -276,6 +281,10 @@ public class VentanaMenu extends JFrame {
 		JPanel panelVenta = pv;
 		panelesFarmaceutico.add(panelVenta,"panelVenta");
 		
+		PanelDevolucion pd = new PanelDevolucion(listaL,listaP,listaM);
+		JPanel panelDevolucion = pd;
+		panelesFarmaceutico.add(panelDevolucion, "panelDevolucion");
+		
 		JButton btnSalir2 = new JButton("Salir");
 		btnSalir2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -289,8 +298,22 @@ public class VentanaMenu extends JFrame {
 		btnSalir2.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnSalir2.setForeground(Color.BLACK);
 		btnSalir2.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnSalir2.setBounds(115, 0, 118, 83);
+		btnSalir2.setBounds(233, 0, 118, 83);
 		panelBotonesFarma.add(btnSalir2);
+		
+		btnDevolucion = new JButton("Devolucion");
+		btnDevolucion.setIcon(new ImageIcon(VentanaMenu.class.getResource("/iconos/Refund-32.png")));
+		btnDevolucion.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				botonesFarma(e);
+			}
+		});
+		btnDevolucion.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnDevolucion.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnDevolucion.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnDevolucion.setBounds(117, 0, 118, 83);
+		panelBotonesFarma.add(btnDevolucion);
+		
 		
 				
 	}
@@ -325,6 +348,10 @@ public class VentanaMenu extends JFrame {
 	private void botonesFarma(MouseEvent evt){
 		if(evt.getSource()==btnVenta){
 			((CardLayout)panelesFarmaceutico.getLayout()).show(panelesFarmaceutico,"panelVenta");
+		}else{
+			if(evt.getSource()==btnDevolucion){
+				((CardLayout)panelesFarmaceutico.getLayout()).show(panelesFarmaceutico,"panelDevolucion");
+			}
 		}
 	}
 	

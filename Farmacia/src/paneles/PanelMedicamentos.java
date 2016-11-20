@@ -375,7 +375,7 @@ public class PanelMedicamentos extends JPanel {
 		
 		ValidarCampo vc = new ValidarCampo();
 		
-		if(vc.validarNombre(tfNombre) && vc.validarCantidad(tfCantidad) && vc.validarFecha(tfFecha) && vc.validarVenta(tfPrecio) && vc.validarCompra(tfCosto) && vc.validarDolencia(tfDolencia)){
+		if(vc.validarNombre(tfNombre) && vc.validarCantidad(tfCantidad) && vc.validarFecha(tfFecha) && vc.validarVenta(tfPrecio) && vc.validarCompra(tfCosto) && vc.validarDolencia(tfDolencia) && vc.validarPrecios(tfPrecio, tfCosto)){
 		
 			int codigo = listaM.dimension()+1;
 			String nombre = tfNombre.getText();

@@ -124,6 +124,11 @@ public class PanelUsuario extends JPanel {
 		tfDir.setColumns(10);
 		tfDir.setBounds(90, 100, 126, 20);
 		panelDatos.add(tfDir);
+		tfDir.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				Validacion.validarDireccion(e);
+			}
+		});
 		
 		tfTel = new JTextField();
 		tfTel.setColumns(10);

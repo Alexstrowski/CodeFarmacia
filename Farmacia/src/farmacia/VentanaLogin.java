@@ -90,6 +90,11 @@ public class VentanaLogin extends JDialog {
 		lblContrasea.setBounds(577, 314, 65, 14);
 		getContentPane().add(lblContrasea);
 		
+		JLabel label_2 = new JLabel("");
+		label_2.setIcon(new ImageIcon(VentanaLogin.class.getResource("/fondos/farmacia.jpg")));
+		label_2.setBounds(489, 193, 296, 49);
+		getContentPane().add(label_2);
+		
 		JLabel label_1 = new JLabel("");
 		label_1.setIcon(new ImageIcon(VentanaLogin.class.getResource("/fondos/loginoficial-resized.png")));
 		label_1.setBounds(0, 0, 1279, 685);

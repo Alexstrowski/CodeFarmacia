@@ -10,11 +10,13 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import listas.ListaDevolucion;
 import listas.ListaLaboratorio;
 import listas.ListaMedicamento;
 import listas.ListaPresentacion;
 import listas.ListaUsuario;
 import listas.ListaVenta;
+import listas.NodoDevolucion;
 import listas.NodoLaboratorio;
 import listas.NodoMedicamento;
 import listas.NodoPresentacion;
@@ -404,6 +406,87 @@ public class EscribirArchivo {
         
         try{
             FileOutputStream archivo = new FileOutputStream("ventas.xls");
+            libro.write(archivo);
+            archivo.close();
+           
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "No se pudo crear el Excel :(", "Error",2);
+        }
+	}
+	
+	public static void escribirArchivoDevolucion(ListaDevolucion lista){
+		
+		HSSFWorkbook libro = new HSSFWorkbook();		//Creamos una instancia de la clase HSSFWorkbook llamada libro
+        
+        HSSFSheet hoja = libro.createSheet("Medicamentos");			//Creamos una instancia de la clase HSSFSheet llamada hoja y la creamos     
+        
+        NodoDevolucion aux = lista.getInicio();
+        
+        HSSFRow fila = hoja.createRow(0);				//Creamos una instancia de la clase HSSFRow llamada fila y creamos la fila con el indice 0
+        
+        HSSFCell celda1 = fila.createCell(0);
+        HSSFCell celda2 = fila.createCell(1);
+        HSSFCell celda3 = fila.createCell(2);
+        HSSFCell celda4 = fila.createCell(3);
+        HSSFCell celda5 = fila.createCell(4);
+        HSSFCell celda6 = fila.createCell(5);
+        HSSFCell celda7 = fila.createCell(6);
+        
+        HSSFRichTextString Codigo = new HSSFRichTextString("CODIGO");
+    	HSSFRichTextString Nombre = new HSSFRichTextString("NOMBRE");
+    	HSSFRichTextString Labo = new HSSFRichTextString("LABORATORIO");
+    	HSSFRichTextString Cantidad = new HSSFRichTextString("CANTIDAD");
+    	HSSFRichTextString Presentacion = new HSSFRichTextString("PRESENTACION");
+    	HSSFRichTextString Precio = new HSSFRichTextString("P/VENTA");
+    	HSSFRichTextString Razon = new HSSFRichTextString("RAZoN");
+    		
+    	celda1.setCellValue(Codigo);
+    	celda2.setCellValue(Nombre);
+    	celda3.setCellValue(Labo);
+    	celda4.setCellValue(Cantidad);
+    	celda5.setCellValue(Presentacion);
+    	celda6.setCellValue(Precio);
+    	celda7.setCellValue(Razon);
+        
+        int i = 1;
+        
+        while(aux!=null){
+        	
+        	
+        	fila = hoja.createRow(i);				//Creamos una instancia de la clase HSSFRow llamada fila y creamos la fila con el indice 0
+            
+        	HSSFCell celdaUno = fila.createCell(0);
+            HSSFCell celdaDos = fila.createCell(1);
+            HSSFCell celdaTres = fila.createCell(2);
+            HSSFCell celdaCuatro = fila.createCell(3);
+            HSSFCell celdaCinco = fila.createCell(4);
+            HSSFCell celdaSeis = fila.createCell(5);
+            HSSFCell celdaSiete = fila.createCell(6);
+            	
+            HSSFRichTextString txtCodigo = new HSSFRichTextString(Integer.toString(aux.getCodigo()));
+            HSSFRichTextString txtNombre = new HSSFRichTextString(aux.getNombre());
+            HSSFRichTextString txtLabo = new HSSFRichTextString(aux.getLaboratorio());
+            HSSFRichTextString txtCantidad = new HSSFRichTextString(Integer.toString(aux.getCantidad()));
+            HSSFRichTextString txtCategoria = new HSSFRichTextString(aux.getPresentacion());
+            HSSFRichTextString txtPrecio = new HSSFRichTextString(Double.toString(aux.getPrecio()));
+            HSSFRichTextString txtRazon = new HSSFRichTextString(aux.getRazon());
+            		
+            celdaUno.setCellValue(txtCodigo);
+           	celdaDos.setCellValue(txtNombre);
+           	celdaTres.setCellValue(txtLabo);
+           	celdaCuatro.setCellValue(txtCantidad);
+           	celdaCinco.setCellValue(txtCategoria);
+           	celdaSeis.setCellValue(txtPrecio);
+           	celdaSiete.setCellValue(txtRazon);
+            	
+            
+           	aux=aux.getSiguiente();
+           	i++;
+                  	   
+        } 
+        
+        try{
+            FileOutputStream archivo = new FileOutputStream("devolucion.xls");
             libro.write(archivo);
             archivo.close();
            

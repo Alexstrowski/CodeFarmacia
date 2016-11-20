@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 
 import farmacia.Validacion;
@@ -115,12 +116,14 @@ public class VentanaAceptar extends JDialog {
 		getContentPane().add(scrollPane);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnAgregar.setIcon(new ImageIcon(VentanaAceptar.class.getResource("/iconos/Plus Math-16.png")));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				botonAgregar(e);
 			}
 		});
-		btnAgregar.setBounds(488, 25, 89, 23);
+		btnAgregar.setBounds(488, 25, 109, 23);
 		getContentPane().add(btnAgregar);
 		
 		JLabel label = new JLabel("");
@@ -186,6 +189,11 @@ public class VentanaAceptar extends JDialog {
         for(int i=0; i<6 ; i++){
         	tabla.getColumnModel().getColumn(i).setCellRenderer(tcr);
         }
+        
+        JTableHeader header = tabla.getTableHeader();
+        header.setBackground(Color.DARK_GRAY);
+        header.setForeground(Color.white);
+        header.setFont(new Font("Tahoma", Font.BOLD, 11));
         
         // LLENADO DE LA TABLA //
         

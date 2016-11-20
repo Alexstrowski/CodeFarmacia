@@ -26,5 +26,12 @@ public class Validacion {
 			evt.consume();
 		}			
     }
+	
+	public static void validarDireccion(java.awt.event.KeyEvent evt){
+		char c=evt.getKeyChar();
+		if((c<45|| c>48 )&& (c<48 || c>57) && (  c<65 || c>90) && (c<97 || c>122)&&(c!=164) && c!=165 && c!=32){
+			evt.consume();
+		}
+	}
 
 }

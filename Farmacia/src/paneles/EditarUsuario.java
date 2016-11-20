@@ -160,36 +160,40 @@ public class EditarUsuario extends JDialog{
 	public void botonGuardar(ActionEvent evt){
 		
 		ValidarCampo vc = new ValidarCampo();
-		
+		String cargo=comboCargo.getSelectedItem().toString();
 		if(vc.validarCampo(tfNombre) && vc.validarCampo(tfApellido) && vc.validarCantidad(tfTelefono) && vc.validarCampo(tfDireccion) && vc.validarCampo(tfPassword) && vc.validarCampo(tfUsuario)){
 		
-			int codigo = lista.dimension()+1;
-			String nombre = tfNombre.getText();
-			String apellido = tfApellido.getText();
-			String telefono = tfTelefono.getText();
-			String direccion = tfDireccion.getText();
-			String password = tfPassword.getText();
-			String usuario = tfUsuario.getText();
-			String cargo = comboCargo.getSelectedItem().toString();
-			
-			lista.editarPorPosicion(pos,nombre,apellido,telefono,direccion,usuario,password,cargo);
-			
-			dtm.setValueAt(aux.getCodigo(),pos-1,0);
-			dtm.setValueAt(aux.getCargo(), pos-1, 1);
-			dtm.setValueAt(aux.getNombre(),pos-1,2);
-			dtm.setValueAt(aux.getApellido(),pos-1,3);
-			dtm.setValueAt(aux.getDireccion(), pos-1, 4);
-			dtm.setValueAt(aux.getTelefono(),pos-1,5);
-			dtm.setValueAt(aux.getUsuario(), pos-1, 6);
-			dtm.setValueAt(aux.getPassword(), pos-1, 7);
-			
-			
-			
-			EscribirArchivo.escribirArchivoUsuarios(lista);
-			
-			JOptionPane.showMessageDialog(null, "¡Modificado!");
-			
-			setVisible(false);
+			if(lista.verificarRepetido(tfNombre.getText(), tfApellido.getText(), tfUsuario.getText(), cargo)){
+				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
+			}else{
+				int codigo = lista.dimension()+1;
+				String nombre = tfNombre.getText();
+				String apellido = tfApellido.getText();
+				String telefono = tfTelefono.getText();
+				String direccion = tfDireccion.getText();
+				String password = tfPassword.getText();
+				String usuario = tfUsuario.getText();
+				//String cargo = comboCargo.getSelectedItem().toString();
+				
+				lista.editarPorPosicion(pos,nombre,apellido,telefono,direccion,usuario,password,cargo);
+				
+				dtm.setValueAt(aux.getCodigo(),pos-1,0);
+				dtm.setValueAt(aux.getCargo(), pos-1, 1);
+				dtm.setValueAt(aux.getNombre(),pos-1,2);
+				dtm.setValueAt(aux.getApellido(),pos-1,3);
+				dtm.setValueAt(aux.getDireccion(), pos-1, 4);
+				dtm.setValueAt(aux.getTelefono(),pos-1,5);
+				dtm.setValueAt(aux.getUsuario(), pos-1, 6);
+				dtm.setValueAt(aux.getPassword(), pos-1, 7);
+				
+				
+				
+				EscribirArchivo.escribirArchivoUsuarios(lista);
+				
+				JOptionPane.showMessageDialog(null, "¡Modificado!");
+				
+				setVisible(false);
+			}
 		}
 	}
 
