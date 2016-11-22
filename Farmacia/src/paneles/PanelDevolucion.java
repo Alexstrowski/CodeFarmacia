@@ -165,7 +165,7 @@ public class PanelDevolucion extends JPanel {
 			DatosMedi.add(tfPrecio);
 			
 			tfRazon = new JComboBox();
-			tfRazon.setModel(new DefaultComboBoxModel(new String[] {"Medicamento equivocado", "Mal estado", "Vencido"}));
+			tfRazon.setModel(new DefaultComboBoxModel(new String[] {"Mal estado", "Vencido"}));
 			tfRazon.setBounds(372, 90, 113, 20);
 			DatosMedi.add(tfRazon);
 		
@@ -288,7 +288,7 @@ public class PanelDevolucion extends JPanel {
 				tfPrecio.setText("");
 				tfPresentacion.setText("");
 		
-				JOptionPane.showMessageDialog(null, "AGREGADO");
+				JOptionPane.showMessageDialog(null, " Producto recibido correctamente ");
 				
 			}else{
 				JOptionPane.showMessageDialog(null, "¡ El elemento no existe en nuestro formulario de medicamentos !","Error",JOptionPane.ERROR_MESSAGE);
