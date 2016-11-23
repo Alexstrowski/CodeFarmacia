@@ -162,8 +162,7 @@ public class EditarUsuario extends JDialog{
 		ValidarCampo vc = new ValidarCampo();
 		String cargo=comboCargo.getSelectedItem().toString();
 		if(vc.validarCampo(tfNombre) && vc.validarCampo(tfApellido) && vc.validarCantidad(tfTelefono) && vc.validarCampo(tfDireccion) && vc.validarCampo(tfPassword) && vc.validarCampo(tfUsuario)){
-		
-			if(lista.verificarRepetido(tfNombre.getText(), tfApellido.getText(), tfUsuario.getText(), cargo)){
+			if(lista.verificarRepetidoVentana(tfNombre.getText(), tfApellido.getText(), tfUsuario.getText(), tfPassword.getText(),cargo,pos)){
 				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
 			}else{
 				int codigo = lista.dimension()+1;

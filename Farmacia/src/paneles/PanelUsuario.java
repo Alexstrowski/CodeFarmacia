@@ -333,7 +333,7 @@ public class PanelUsuario extends JPanel {
 			String usuario = tfUsuario.getText();
 			String cargo = comboCargo.getSelectedItem().toString();
 			
-			if(lista.verificarRepetido(nombre, apellido, usuario, cargo)){
+			if(lista.verificarRepetido(nombre, apellido, usuario, password,cargo)){
 					
 				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
 			}else{

@@ -211,6 +211,29 @@ public class ListaMedicamento {
     	 return false;
     }
     
+    public boolean verificarRepetidoVentana(String nombre,String laboratorio, String presentacion,int codigo){
+    	
+    	NodoMedicamento aux = inicio;
+    	
+    	 while(aux!=null){
+    		 
+    		 if(aux.getCodigo()==codigo){
+    			 if(aux.getNombre().toLowerCase().equals(nombre.toLowerCase()) && aux.getLaboratorio().toLowerCase().equals(laboratorio.toLowerCase()) && aux.getPresentacion().toLowerCase().equals(presentacion.toLowerCase())){
+        			 return false;
+        		 }
+    		 }else{
+    			 if(aux.getNombre().toLowerCase().equals(nombre.toLowerCase()) && aux.getLaboratorio().toLowerCase().equals(laboratorio.toLowerCase()) && aux.getPresentacion().toLowerCase().equals(presentacion.toLowerCase())){
+        			 return true;
+        		 }
+    		 }
+    		
+    		
+			 aux=aux.getSiguiente();	
+		 }
+    	 
+    	 return false;
+    }
+    
     public void devolverCantidad(int codigo,int cantidad){
     	
     	NodoMedicamento aux = inicio;

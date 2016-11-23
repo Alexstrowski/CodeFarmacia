@@ -187,41 +187,46 @@ public class EditarMedicamento extends JDialog {
 		ValidarCampo vc = new ValidarCampo();
 		
 		if(vc.validarNombre(tfNombre) && vc.validarCantidad(tfCantidad) && vc.validarFecha(tfFecha) && vc.validarVenta(tfPrecio) && vc.validarCompra(tfCosto) && vc.validarDolencia(tfDolencia) && vc.validarPrecios(tfPrecio, tfCosto)){
-		
-			int codigo = lista.dimension()+1;
-			String nombre = tfNombre.getText();
-			String laboratorio = tfLabo.getSelectedItem().toString();
-			int cantidad = Integer.parseInt(tfCantidad.getText());
-			String presentacion = tfPresentacion.getSelectedItem().toString();
 			
-			String formato = "dd/MMM/yyyy";
-			Date date = tfFecha.getDate();
-			SimpleDateFormat sdf = new SimpleDateFormat(formato);
-			String fecha = sdf.format(date);
+			if(lista.verificarRepetidoVentana(tfNombre.getText(),tfLabo.getSelectedItem().toString(),tfPresentacion.getSelectedItem().toString(),pos)){
+				JOptionPane.showMessageDialog(null, "¡ El elemento ya está en la lista !","Error",JOptionPane.ERROR_MESSAGE);
+			}else{
+				int codigo = lista.dimension()+1;
+				String nombre = tfNombre.getText();
+				String laboratorio = tfLabo.getSelectedItem().toString();
+				int cantidad = Integer.parseInt(tfCantidad.getText());
+				String presentacion = tfPresentacion.getSelectedItem().toString();
+				
+				String formato = "dd/MMM/yyyy";
+				Date date = tfFecha.getDate();
+				SimpleDateFormat sdf = new SimpleDateFormat(formato);
+				String fecha = sdf.format(date);
+				
+				double precio = Double.parseDouble(tfPrecio.getText());
+				double costo = Double.parseDouble(tfCosto.getText());
+				String dolencia = tfDolencia.getText();
+				
+				
+				lista.editarPorPosicion(pos,nombre, laboratorio, cantidad, presentacion, fecha, precio,costo,dolencia);
+				
+				dtm.setValueAt(aux.getCodigo(),pos-1,0);
+				dtm.setValueAt(aux.getNombre(),pos-1,1);
+				dtm.setValueAt(aux.getLaboratorio(),pos-1,2);
+				dtm.setValueAt(aux.getCantidad(),pos-1,3);
+				dtm.setValueAt(aux.getPresentacion(),pos-1,4);
+				dtm.setValueAt(aux.getFecha(),pos-1,5);
+				dtm.setValueAt(aux.getPrecio(),pos-1,6);
+				dtm.setValueAt(aux.getCosto(),pos-1,7);
+				dtm.setValueAt(aux.getDolencia(),pos-1,8);
+				
+				
+				EscribirArchivo.escribirArchivoMedicamentos(lista);
+				
+				JOptionPane.showMessageDialog(null, "¡Modificado!");
+				
+				setVisible(false);
+			}
 			
-			double precio = Double.parseDouble(tfPrecio.getText());
-			double costo = Double.parseDouble(tfCosto.getText());
-			String dolencia = tfDolencia.getText();
-			
-			
-			lista.editarPorPosicion(pos,nombre, laboratorio, cantidad, presentacion, fecha, precio,costo,dolencia);
-			
-			dtm.setValueAt(aux.getCodigo(),pos-1,0);
-			dtm.setValueAt(aux.getNombre(),pos-1,1);
-			dtm.setValueAt(aux.getLaboratorio(),pos-1,2);
-			dtm.setValueAt(aux.getCantidad(),pos-1,3);
-			dtm.setValueAt(aux.getPresentacion(),pos-1,4);
-			dtm.setValueAt(aux.getFecha(),pos-1,5);
-			dtm.setValueAt(aux.getPrecio(),pos-1,6);
-			dtm.setValueAt(aux.getCosto(),pos-1,7);
-			dtm.setValueAt(aux.getDolencia(),pos-1,8);
-			
-			
-			EscribirArchivo.escribirArchivoMedicamentos(lista);
-			
-			JOptionPane.showMessageDialog(null, "¡Modificado!");
-			
-			setVisible(false);
 		}
 	}
 	

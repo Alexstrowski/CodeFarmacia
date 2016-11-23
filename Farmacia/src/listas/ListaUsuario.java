@@ -201,15 +201,39 @@ public class ListaUsuario {
         
     }
 	
-	public boolean verificarRepetido(String nombre,String apellido,String usuario, String cargo){
+	public boolean verificarRepetido(String nombre,String apellido,String usuario, String contraseña, String cargo){
     	
     	NodoUsuario aux = inicio;
     	
     	 while(aux!=null){
     		 
-    		 if( (aux.getNombre().toLowerCase().equals(nombre.toLowerCase()) || aux.getApellido().toLowerCase().equals(apellido.toLowerCase())) && aux.getUsuario().toLowerCase().equals(usuario.toLowerCase())){
+    		 if( (aux.getNombre().toLowerCase().equals(nombre.toLowerCase()) && aux.getApellido().toLowerCase().equals(apellido.toLowerCase())) && 
+    				 aux.getUsuario().toLowerCase().equals(usuario.toLowerCase()) && aux.getCargo().toLowerCase().equals(cargo.toLowerCase())){
     			 return true;
     		 }
+    		
+			 aux=aux.getSiguiente();	
+		 }
+    	 
+    	 return false;
+    }
+	
+	public boolean verificarRepetidoVentana(String nombre,String apellido,String usuario, String contraseña, String cargo,int codigo){
+    	
+    	NodoUsuario aux = inicio;
+    	
+    	 while(aux!=null){
+    		 
+    		 if(aux.getCodigo()==codigo){
+    			 if(  aux.getUsuario().toLowerCase().equals(usuario.toLowerCase()) && aux.getCargo().toLowerCase().equals(cargo.toLowerCase())){
+        			 return false;
+        		 }
+    		 }else{
+    			 if(  aux.getUsuario().toLowerCase().equals(usuario.toLowerCase()) && aux.getCargo().toLowerCase().equals(cargo.toLowerCase())){
+        			 return true;
+        		 } 
+    		 }
+    	
     		
 			 aux=aux.getSiguiente();	
 		 }
